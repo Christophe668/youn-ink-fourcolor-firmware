@@ -1,49 +1,49 @@
-# 局域网相册推送 API
+# LAN Gallery Push API
 
-本文档记录 2BP 相册固件在局域网 Wi-Fi 模式下的 HTTP 接口，方便 NAS、脚本或局域网服务定时推送图片到设备。
+This document describes the HTTP API the 2BP gallery firmware exposes in LAN Wi-Fi mode, so a NAS, script or local service can push images to the device on a schedule.
 
-## 使用前提
+## Prerequisites
 
-设备需要先连接到局域网 Wi-Fi，然后在设备设置页打开 `局域网服务`。开启后设置页会显示设备当前局域网 IP，例如：
+The device must be connected to your Wi-Fi network, and `LAN service` must be turned on in the device's Settings page. Once enabled, Settings shows the device's current LAN IP, for example:
 
 ```text
 192.168.110.238
 ```
 
-后续接口都以这个 IP 为准：
+All endpoints below use that IP:
 
 ```text
 http://192.168.110.238
 ```
 
-局域网服务打开后，浏览器访问 `http://设备IP/` 可以进入图片管理页面。NAS 或脚本也可以直接调用下面的 API。
+With the LAN service on, open `http://<device-ip>/` in a browser to get the image management page. A NAS or script can also call the API below directly.
 
-## 图片格式要求
+## Image format
 
-当前 `/upload` 接口不直接接收 JPG、PNG、WEBP 等常见图片文件，而是接收已经转换好的屏幕原始像素数据。
+The `/upload` endpoint does not accept common image files such as JPG, PNG or WEBP. It takes raw screen pixel data that has already been converted.
 
-设备屏幕尺寸固定为：
+The screen size is fixed at:
 
 ```text
 400 x 300
 ```
 
-支持两种上传格式：
+Two upload formats are supported:
 
-| format | 含义 | 文件大小 |
+| format | Meaning | File size |
 | --- | --- | --- |
-| `1bpp` | 黑白 1 bit per pixel | `15000 bytes` |
-| `bwry2bpp` 或 `2bpp` | 黑/白/黄/红四色 2 bits per pixel | `30000 bytes` |
+| `1bpp` | Black/white, 1 bit per pixel | `15000 bytes` |
+| `bwry2bpp` or `2bpp` | Black/white/yellow/red, 2 bits per pixel | `30000 bytes` |
 
-如果从 NAS 定时推送普通图片，需要先在 NAS 侧把 JPG/PNG 转成上述 bin 格式，再调用 `/upload`。
+To push ordinary images from a NAS, convert the JPG/PNG to one of these bin formats on the NAS first, then call `/upload`.
 
-## 快速检查服务状态
+## Check service status
 
 ```bash
 curl "http://192.168.110.238/status"
 ```
 
-成功返回示例：
+Example response:
 
 ```json
 {
@@ -54,11 +54,11 @@ curl "http://192.168.110.238/status"
 }
 ```
 
-其中 `mode=lan` 表示当前是局域网 HTTP 服务；`mode=ap` 表示热点传图模式。
+`mode=lan` means the LAN HTTP service is running; `mode=ap` means hotspot upload mode.
 
-## 上传图片
+## Upload an image
 
-上传 2BP 四色图片：
+Upload a 2BP four-color image:
 
 ```bash
 curl -X POST \
@@ -67,7 +67,7 @@ curl -X POST \
   --data-binary "@/path/to/image_400x300_2bpp.bin"
 ```
 
-上传 1BP 黑白图片：
+Upload a 1BP black/white image:
 
 ```bash
 curl -X POST \
@@ -76,7 +76,7 @@ curl -X POST \
   --data-binary "@/path/to/image_400x300_1bpp.bin"
 ```
 
-成功返回示例：
+Example success response:
 
 ```json
 {
@@ -85,32 +85,32 @@ curl -X POST \
 }
 ```
 
-失败常见原因：
+Common failure causes:
 
-| 原因 | 表现 |
+| Cause | Symptom |
 | --- | --- |
-| 文件大小不对 | 返回 `需要400x300 2bpp四色数据` 或 `需要400x300 1bpp数据` |
-| 设备 HTTP 服务未开启 | NAS 无法连接设备 IP |
-| IP 变化 | 需要重新读取设备设置页显示的局域网 IP |
-| 相册容量满 | 设备保存失败 |
+| Wrong file size | Returns `Expected 400x300 2bpp four-color data` or `Expected 400x300 1bpp data` |
+| Device HTTP service not enabled | The NAS can't connect to the device IP |
+| IP changed | Re-read the LAN IP shown in the device's Settings page |
+| Gallery full | The device fails to save |
 
-## 查询图片列表
+## List images
 
 ```bash
 curl "http://192.168.110.238/photos"
 ```
 
-返回示例：
+Example response:
 
 ```json
 {
   "photos": [
     {
       "id": "ap12345678901",
-      "title": "WiFi四色图片",
+      "title": "WiFi color image",
       "date": "2026-05-21",
       "location": "WiFi AP",
-      "body": "手机 WiFi 传图 · 2 BP 四色",
+      "body": "Phone WiFi upload · 2 BP color",
       "width": 400,
       "height": 300,
       "size": 30000,
@@ -120,20 +120,20 @@ curl "http://192.168.110.238/photos"
 }
 ```
 
-可用字段说明：
+Fields:
 
-| 字段 | 含义 |
+| Field | Meaning |
 | --- | --- |
-| `id` | 图片 ID，后续读取、删除、编辑都用它 |
-| `title` | 图片标题 |
-| `date` | 日期字符串 |
-| `location` | 地点 |
-| `body` | 描述 |
-| `width` / `height` | 图片尺寸 |
-| `size` | 原始数据大小 |
-| `format` | `1bpp` 或 `bwry2bpp` |
+| `id` | Image ID, used for download, delete and edit |
+| `title` | Image title |
+| `date` | Date string |
+| `location` | Location |
+| `body` | Description |
+| `width` / `height` | Image size |
+| `size` | Raw data size |
+| `format` | `1bpp` or `bwry2bpp` |
 
-## 下载图片原始数据
+## Download raw image data
 
 ```bash
 curl \
@@ -141,44 +141,44 @@ curl \
   --output image.bin
 ```
 
-返回内容是该图片保存时的原始 bin 数据。
+Returns the raw bin data the image was saved with.
 
-## 删除图片
+## Delete an image
 
 ```bash
 curl -X DELETE \
   "http://192.168.110.238/photo?id=ap12345678901"
 ```
 
-成功返回：
+Success response:
 
 ```json
 {"success":true}
 ```
 
-## 更新图片信息
+## Update image info
 
 ```bash
 curl -X POST "http://192.168.110.238/photo/meta" \
   -H "Content-Type: application/json" \
   -d '{
     "id": "ap12345678901",
-    "title": "每日照片",
+    "title": "Daily photo",
     "date": "2026-05-21",
     "location": "NAS",
-    "body": "NAS 每日自动推送"
+    "body": "Pushed daily by the NAS"
   }'
 ```
 
-成功返回：
+Success response:
 
 ```json
 {"success":true}
 ```
 
-## 调整图片顺序
+## Reorder images
 
-上移一位：
+Move up one position:
 
 ```bash
 curl -X POST "http://192.168.110.238/photos/move" \
@@ -186,7 +186,7 @@ curl -X POST "http://192.168.110.238/photos/move" \
   -d '{"id":"ap12345678901","delta":-1}'
 ```
 
-下移一位：
+Move down one position:
 
 ```bash
 curl -X POST "http://192.168.110.238/photos/move" \
@@ -194,15 +194,15 @@ curl -X POST "http://192.168.110.238/photos/move" \
   -d '{"id":"ap12345678901","delta":1}'
 ```
 
-## 设置轮播周期
+## Slideshow interval
 
-查询当前轮播设置：
+Read the current settings:
 
 ```bash
 curl "http://192.168.110.238/settings"
 ```
 
-返回示例：
+Example response:
 
 ```json
 {
@@ -215,7 +215,7 @@ curl "http://192.168.110.238/settings"
 }
 ```
 
-设置轮播周期：
+Set the slideshow interval:
 
 ```bash
 curl -X POST "http://192.168.110.238/settings" \
@@ -223,7 +223,7 @@ curl -X POST "http://192.168.110.238/settings" \
   -d '{"slideshow_interval":5}'
 ```
 
-关闭本地 HTTP 服务：
+Stop the local HTTP service:
 
 ```bash
 curl -X POST "http://192.168.110.238/settings" \
@@ -231,7 +231,7 @@ curl -X POST "http://192.168.110.238/settings" \
   -d '{"service_enabled":false}'
 ```
 
-关闭服务、关闭 Wi-Fi 并立即进入省电模式：
+Stop the service, turn off Wi-Fi and go to sleep immediately:
 
 ```bash
 curl -X POST "http://192.168.110.238/settings" \
@@ -239,37 +239,37 @@ curl -X POST "http://192.168.110.238/settings" \
   -d '{"service_enabled":false,"wifi_enabled":false,"sleep":true}'
 ```
 
-支持值：
+Supported values:
 
-| 值 | 含义 |
+| Value | Meaning |
 | --- | --- |
-| `0` | 关闭轮播 |
-| `5` | 5 分钟 |
-| `10` | 10 分钟 |
-| `30` | 30 分钟 |
+| `0` | Slideshow off |
+| `5` | 5 minutes |
+| `10` | 10 minutes |
+| `30` | 30 minutes |
 
-## NAS 定时任务示例
+## Scheduled NAS push example
 
-本目录提供了一个可复用转换脚本：
+This directory includes a reusable converter script:
 
 ```text
 docs/inkscreen_image_converter.js
 ```
 
-它抽取自设备管理 HTML 页面中的转换算法，用于把普通图片转换为设备 `/upload` 接口需要的原始 bin。命令行模式依赖 `sharp` 解码和缩放图片：
+It is extracted from the conversion algorithm in the device's management HTML page and turns an ordinary image into the raw bin the `/upload` endpoint expects. The command-line mode uses `sharp` to decode and resize images:
 
 ```bash
 npm install sharp
 node docs/inkscreen_image_converter.js input.jpg daily_400x300_2bpp.bin bwry2bpp
 ```
 
-也可以生成黑白 1BP：
+It can also produce 1BP black/white:
 
 ```bash
 node docs/inkscreen_image_converter.js input.jpg daily_400x300_1bpp.bin 1bpp
 ```
 
-假设 NAS 已经生成了一个 `daily_400x300_2bpp.bin`，可以用 cron 每天推送一次：
+If the NAS has already produced `daily_400x300_2bpp.bin`, cron can push it once a day:
 
 ```bash
 #!/bin/sh
@@ -282,7 +282,7 @@ curl -fsS -X POST \
   --data-binary "@${BIN}"
 ```
 
-如果希望上传后补充描述，可以先解析返回的 `id`，再调用 `/photo/meta`。例如：
+To add a description after uploading, parse the returned `id` and then call `/photo/meta`. For example:
 
 ```bash
 #!/bin/sh
@@ -300,17 +300,17 @@ if [ -n "$ID" ]; then
   TODAY=$(date +%F)
   curl -fsS -X POST "http://${DEVICE}/photo/meta" \
     -H "Content-Type: application/json" \
-    -d "{\"id\":\"${ID}\",\"title\":\"每日照片\",\"date\":\"${TODAY}\",\"location\":\"NAS\",\"body\":\"NAS 自动推送\"}"
+    -d "{\"id\":\"${ID}\",\"title\":\"Daily photo\",\"date\":\"${TODAY}\",\"location\":\"NAS\",\"body\":\"Pushed by the NAS\"}"
 fi
 ```
 
-## 推荐后续增强
+## Suggested future improvements
 
-目前 API 已经可以支持 NAS 定时推送，但如果要让 NAS 直接传 JPG/PNG，还需要新增一个固件端或 NAS 端转换流程。
+The API already supports scheduled NAS pushes, but letting the NAS send JPG/PNG directly would need a new conversion step on the firmware or NAS side.
 
-推荐方案：
+Options:
 
-1. NAS 侧转换：在 NAS 上用脚本把 JPG/PNG 转为 `400x300 bwry2bpp bin`，再调用 `/upload`。这种方式最省设备内存。
-2. 固件端新增 `/upload-image`：设备直接接收 JPG/PNG 并转换。开发更方便，但 ESP32 端内存和解码成本更高。
+1. Convert on the NAS: a script on the NAS turns JPG/PNG into a `400x300 bwry2bpp bin`, then calls `/upload`. This uses the least device memory.
+2. Add `/upload-image` to the firmware: the device accepts JPG/PNG directly and converts it. Easier to use, but costs more memory and decoding work on the ESP32.
 
-当前更建议使用方案 1。
+Option 1 is currently recommended.

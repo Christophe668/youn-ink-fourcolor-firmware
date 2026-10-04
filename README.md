@@ -1,49 +1,51 @@
 # Youn Ink Four Color
 
-这是一个面向 ESP32-S3 墨水屏设备的个人 AI 助手项目。当前主线由三部分组成：ESP32 固件、Python 后端服务、以及图片/待办/设备管理页面。
+> **English fork.** This fork translates the on-device UI, the device's image-upload web page and the documentation to English. See the [`english-ui`](https://github.com/Christophe668/youn-ink-fourcolor-firmware/tree/english-ui) branch. Upstream: [LazyYoun/youn-ink-fourcolor-firmware](https://github.com/LazyYoun/youn-ink-fourcolor-firmware).
 
-项目重点不是一个通用 npm 包，而是一套可以真实运行在墨水屏设备上的系统：语音对话、TTS 播放、待办同步、天气/新闻/日历/电子书/相册页面、AP 传图、OTA 固件管理，以及适配四色屏的 RawDraw UI。
+A personal AI assistant project for ESP32-S3 e-paper devices. The main line has three parts: the ESP32 firmware, a Python backend service, and pages for managing images, to-dos and devices.
 
-## 2BP 四色图像链路
+This is not a general-purpose npm package. It is a system that runs on a real e-paper device: voice chat, TTS playback, to-do sync, weather/news/calendar/e-book/gallery pages, AP image upload, OTA firmware management, and a RawDraw UI designed for four-color screens.
+
+## 2BP four-color image pipeline
 
 ![Youn Ink Four Color 2BP BWRY architecture](README-2bp-architecture.png)
 
-相册图片可由 PC/NAS 管理端或设备 AP 页面进入服务端，转换为 `2BP BWRY`（黑、白、红、黄）后通过 Wi-Fi 推送到 ESP32-S3 四色墨水屏。本仓库的 2BP 四色链路与 NOTE4 的 4BP 黑白灰阶相册独立维护：面板颜色、像素格式和刷新驱动均不同。
+Gallery images enter the server from a PC/NAS admin client or the device's AP page, are converted to `2BP BWRY` (black, white, red, yellow), and are pushed over Wi-Fi to the ESP32-S3 four-color e-paper screen. The 2BP four-color pipeline in this repo is maintained separately from NOTE4's 4BP black-and-white grayscale gallery: the panel colors, pixel format and refresh driver are all different.
 
-## 当前状态
+## Current status
 
-- 后端已经切换为 `server/` 下的 Python 服务，根目录旧 Node `scripts/` 已删除。
-- 固件主界面使用 RawDraw 渲染，默认按四色屏设计，同时保留 1bpp 黑白屏兼容。
-- 主题暂时只保留一个默认视觉方向：偏任天堂感的四色主题，强调红、黄、黑、白的语义使用。
-- 图片传输支持 1bpp 黑白与 2bpp 四色 BWRY 两种格式。
-- 根目录 `.gitignore` 已排除构建产物、日志、pid、数据库、本地配置和密钥文件。
+- The backend is now the Python service under `server/`. The old root-level Node `scripts/` have been removed.
+- The firmware's main UI is rendered with RawDraw, designed for the four-color screen by default, with 1bpp black-and-white compatibility kept.
+- There is only one theme for now: a Nintendo-inspired four-color theme with semantic use of red, yellow, black and white.
+- Image transfer supports two formats: 1bpp black/white and 2bpp four-color BWRY.
+- The root `.gitignore` excludes build output, logs, pid files, databases, local config and key files.
 
-## 目录结构
+## Directory structure
 
 ```text
 .
-├── firmware/        ESP32-IDF 固件，RawDraw UI、页面渲染、屏幕驱动、AP 传图
-├── server/          Python 后端，WebSocket 对话、TTS、Discovery、图片推送、OTA API
-├── frontend/        管理前端源码，使用独立的 package/pnpm 工作流
-├── docs/            历史设计文档和实现记录
-├── documents/       项目资料
-└── package.json     仅保留仓库级辅助命令，不再作为旧 Node 服务入口
+├── firmware/        ESP-IDF firmware: RawDraw UI, page rendering, display driver, AP image upload
+├── server/          Python backend: WebSocket chat, TTS, discovery, image push, OTA API
+├── frontend/        Admin frontend source, with its own package/pnpm workflow
+├── docs/            Historical design docs and implementation notes
+├── documents/       Project materials
+└── package.json     Repo-level helper commands only; no longer the entry point for the old Node service
 ```
 
-注意：`firmware/scripts/` 和 `frontend/scripts/` 仍然有用，分别属于固件工具和前端工具；删除的是根目录历史遗留的 `scripts/`。
+Note: `firmware/scripts/` and `frontend/scripts/` are still used, for firmware and frontend tooling respectively. Only the legacy root-level `scripts/` was removed.
 
-## 后端服务
+## Backend service
 
-后端入口是 `server/llmserve.py`，推荐通过 `server/start.sh` 管理。服务默认端口：
+The backend entry point is `server/llmserve.py`; manage it with `server/start.sh`. Default ports:
 
-| 端口 | 协议 | 用途 |
+| Port | Protocol | Purpose |
 | --- | --- | --- |
-| `9001` | WebSocket | ESP32 语音、LLM、TTS、同步消息 |
-| `8766` | UDP | 设备发现 |
-| `8766` | HTTP | 图片推送、设备图片管理、OTA API |
-| `8090` | HTTP | 独立管理服务，可选 |
+| `9001` | WebSocket | ESP32 voice, LLM, TTS, sync messages |
+| `8766` | UDP | Device discovery |
+| `8766` | HTTP | Image push, device image management, OTA API |
+| `8090` | HTTP | Standalone admin service (optional) |
 
-### 安装依赖
+### Install dependencies
 
 ```bash
 cd server
@@ -52,15 +54,15 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-### 启动服务
+### Start the service
 
 ```bash
-export DASHSCOPE_API_KEY=你的百炼APIKey
+export DASHSCOPE_API_KEY=your_dashscope_api_key
 cd server
 ./start.sh start
 ```
 
-常用命令：
+Common commands:
 
 ```bash
 cd server
@@ -70,7 +72,7 @@ cd server
 ./start.sh stop
 ```
 
-也可以从仓库根目录调用：
+Or from the repo root:
 
 ```bash
 npm run server:start
@@ -78,113 +80,122 @@ npm run server:status
 npm run server:logs
 ```
 
-### 本地模拟设备
+### Local mock device
 
 ```bash
 cd server
 python3 mock_client.py --server ws://127.0.0.1:9001
 ```
 
-## 图片和设备管理
+## Image and device management
 
-图片 HTTP API 由 `server/push_image.py` 挂到 `8766` 端口。它支持：
+The image HTTP API is mounted by `server/push_image.py` on port `8766`. It supports:
 
-- 上传图片文件并转换后推送到设备。
-- 选择 `1bpp` 黑白格式或 `2bpp` 四色 BWRY 格式。
-- 查询设备图片列表。
-- 删除设备图片。
-- 上传固件并提供 OTA 下载。
+- Uploading an image file, converting it and pushing it to the device.
+- Choosing `1bpp` black/white or `2bpp` four-color BWRY format.
+- Listing the images on the device.
+- Deleting images from the device.
+- Uploading firmware and serving it for OTA download.
 
-常用接口：
+Common endpoints:
 
 ```bash
 curl http://localhost:8766/api/status
 curl http://localhost:8766/api/images
 ```
 
-上传图片示例：
+Upload example:
 
 ```bash
 curl -X POST http://localhost:8766/api/upload_image \
   -F "image=@/path/to/photo.jpg" \
   -F "format=bwry2bpp" \
-  -F "title=照片标题"
+  -F "title=Photo title"
 ```
 
-设备进入 AP 传图模式后，手机连接设备热点并访问：
+When the device is in AP upload mode, join its hotspot from your phone and open:
 
 ```text
 http://192.168.4.1
 ```
 
-## 固件
+To push images over your home network instead, see [docs/LAN_PHOTO_PUSH_API.md](docs/LAN_PHOTO_PUSH_API.md).
 
-固件位于 `firmware/`，基于 ESP-IDF。默认面向 ZecTrix ESP32-S3 4.2 寸墨水屏，支持四色 BWRY 屏，也保留 1bpp 黑白屏配置。
+## Firmware
 
-### 编译
+The firmware lives in `firmware/` and is based on ESP-IDF v6.0. It targets the ZecTrix ESP32-S3 4.2-inch e-paper device by default, supports the four-color BWRY screen, and keeps a 1bpp black-and-white configuration.
+
+### Build
 
 ```bash
 cd firmware
-source ~/Documents/esp/v6.0/esp-idf/export.sh
+source ~/esp/esp-idf-v6.0/export.sh   # path to your ESP-IDF v6.0 install
+idf.py set-target esp32s3             # first time only
 idf.py build
 ```
 
-根目录辅助命令：
+Flash (hold BOOT and tap RESET if the port isn't detected):
+
+```bash
+idf.py -p /dev/cu.usbmodemXXXX flash
+```
+
+Repo-root helper:
 
 ```bash
 npm run firmware:build
 ```
 
-### 屏幕配置
+### Display configuration
 
-固件 Kconfig 中有屏幕类型选择：
+The firmware Kconfig has a display type option:
 
 ```text
-ZECTRIX_EPD_PANEL_4COLOR_SSD2683  四色 BWRY 屏
-ZECTRIX_EPD_PANEL_1BPP            黑白 1bpp 屏
+ZECTRIX_EPD_PANEL_4COLOR_SSD2683  four-color BWRY screen
+ZECTRIX_EPD_PANEL_1BPP            black/white 1bpp screen
 ```
 
-如果要刷回旧黑白屏，先在 `idf.py menuconfig` 中切到 `1bpp black/white EPD`，再重新构建烧录。RawDraw 主题层会把红/黄语义色降级成黑白可读样式。
+To go back to the old black-and-white screen, switch to `1bpp black/white EPD` in `idf.py menuconfig`, then rebuild and flash. The RawDraw theme layer degrades the red/yellow semantic colors into readable black-and-white styles.
 
-## UI 说明
+## UI overview
 
-固件 UI 目前走 RawDraw 组件体系，重点页面包括：
+The firmware UI uses the RawDraw component system. The main pages are:
 
-- 对话：显示用户语音、识别状态、AI 回复。
-- 待办：本地展示、服务端同步、完成/删除/编辑。
-- 设置：音量、亮度、主题、网络、同步、OTA 等。
-- 相册：缩略图列表、大图展示、AP 传图入口。
-- 天气/天气详情、新闻、黄历、年度进度、日历、电子书、日志。
-- 快速切换 Overlay：用于页面间快速跳转。
+- Chat: shows the user's speech, recognition status and the AI reply.
+- To-do: local display, server sync, complete/delete/edit.
+- Settings: volume, brightness, theme, network, sync, OTA and more.
+- Gallery: thumbnail list, full-screen view, entry point for AP upload.
+- Weather / weather details, news, almanac, year progress, calendar, e-book, log.
+- Quick-switch overlay: for jumping between pages.
 
-四色屏主题层通过语义样式绘制组件，不建议在业务页面里继续新增裸 `RED/YELLOW/BLACK/WHITE`。新增 UI 时优先使用 RawDraw 组件和 theme token。
+The four-color theme layer draws components through semantic styles. Avoid adding raw `RED/YELLOW/BLACK/WHITE` in page code; prefer RawDraw components and theme tokens for new UI.
 
-## 环境变量
+## Environment variables
 
-常用后端环境变量：
+Common backend environment variables:
 
-| 变量 | 默认值 | 说明 |
+| Variable | Default | Description |
 | --- | --- | --- |
-| `DASHSCOPE_API_KEY` | 无 | 百炼 API Key，启动后端必需 |
-| `LISTEN_HOST` | `0.0.0.0` | WebSocket 监听地址 |
-| `LISTEN_PORT` | `9001` | WebSocket 端口 |
-| `DISCOVERY_PORT` | `8766` | UDP 发现端口 |
-| `PUSH_IMAGE_PORT` | `8766` | 图片/OTA HTTP API 端口 |
-| `TTS_WS_CHUNK_BYTES` | `8000` | TTS 推送分片大小 |
-| `TTS_WS_CHUNK_GAP_SEC` | `0.01` | TTS 分片发送间隔 |
+| `DASHSCOPE_API_KEY` | none | Alibaba DashScope (Bailian) API key, required to start the backend |
+| `LISTEN_HOST` | `0.0.0.0` | WebSocket listen address |
+| `LISTEN_PORT` | `9001` | WebSocket port |
+| `DISCOVERY_PORT` | `8766` | UDP discovery port |
+| `PUSH_IMAGE_PORT` | `8766` | Image/OTA HTTP API port |
+| `TTS_WS_CHUNK_BYTES` | `8000` | TTS push chunk size |
+| `TTS_WS_CHUNK_GAP_SEC` | `0.01` | Delay between TTS chunks |
 
-不要提交 `.env`、数据库、日志、pid、构建目录和固件产物。
+Do not commit `.env`, databases, logs, pid files, build directories or firmware artifacts.
 
-## Git 提交范围
+## What to commit
 
-建议提交：
+Commit:
 
-- `firmware/main/`、`firmware/components/`、`firmware/partitions/` 等固件源码。
-- `server/*.py`、`server/static/`、`server/requirements.txt`、`server/DEPLOY.md`。
-- `frontend/src/`、`frontend/package.json`、`frontend/pnpm-lock.yaml` 等前端源码。
-- 根目录 README、文档、配置模板。
+- Firmware source such as `firmware/main/`, `firmware/components/`, `firmware/partitions/`.
+- `server/*.py`, `server/static/`, `server/requirements.txt`, `server/DEPLOY.md`.
+- Frontend source such as `frontend/src/`, `frontend/package.json`, `frontend/pnpm-lock.yaml`.
+- The root README, docs and config templates.
 
-不要提交：
+Do not commit:
 
 - `firmware/build/`
 - `firmware/managed_components/`
