@@ -644,12 +644,9 @@ bool RawDrawUiManager::TryDisplayCurrentPhotoRaw4Color() {
     return shown;
 }
 
-const std::array<RawDrawUiManager::QuickSwitchItem, 5>& RawDrawUiManager::GetQuickSwitchItems() {
-    static const std::array<QuickSwitchItem, 5> kItems = {{
+const std::array<RawDrawUiManager::QuickSwitchItem, 2>& RawDrawUiManager::GetQuickSwitchItems() {
+    static const std::array<QuickSwitchItem, 2> kItems = {{
         {RawDrawPageId::Gallery, "Gallery", FA_SETTINGS_IMAGE},
-        {RawDrawPageId::Calendar, "Calendar", FA_SETTINGS_CALENDAR},
-        {RawDrawPageId::YearProgress, "Year progress", FA_SETTINGS_CLOCK},
-        {RawDrawPageId::Almanac, "Almanac", FA_SETTINGS_BOOK},
         {RawDrawPageId::Settings, "Settings", FA_SETTINGS_GEAR},
 #if 0
         // Hardware-only alignment pages are intentionally hidden from the
