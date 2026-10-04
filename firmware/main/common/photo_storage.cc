@@ -70,7 +70,7 @@ static void format_epoch_date(uint64_t epoch, char* out, size_t out_size) {
 static void apply_default_metadata(PhotoInfo* info) {
     if (!info) return;
     if (info->title[0] == '\0') {
-        strlcpy(info->title, "那年今日", sizeof(info->title));
+        strlcpy(info->title, "On this day", sizeof(info->title));
     }
     if (info->date[0] == '\0' && info->timestamp > 0) {
         format_epoch_date(info->timestamp, info->date, sizeof(info->date));
@@ -78,10 +78,10 @@ static void apply_default_metadata(PhotoInfo* info) {
         format_epoch_date(strtoull(info->date, nullptr, 10), info->date, sizeof(info->date));
     }
     if (info->location[0] == '\0') {
-        strlcpy(info->location, "未知地点", sizeof(info->location));
+        strlcpy(info->location, "Unknown place", sizeof(info->location));
     }
     if (info->body[0] == '\0') {
-        strlcpy(info->body, "暂无文案", sizeof(info->body));
+        strlcpy(info->body, "No caption", sizeof(info->body));
     }
 }
 

@@ -34,7 +34,7 @@ void WeatherPage::SetupGrid() {
 
     // 城市名（第 0 行，占 4 列）
     city_label_ = lv_label_create(container_);
-    lv_label_set_text(city_label_, "北京");
+    lv_label_set_text(city_label_, "Beijing");
     lv_obj_set_grid_cell(city_label_, LV_GRID_ALIGN_CENTER, 0, 4, LV_GRID_ALIGN_CENTER, 0, 1);
 
     // 温度（第 1 行，占 2 列）
@@ -44,22 +44,22 @@ void WeatherPage::SetupGrid() {
 
     // 天气状况（第 1 行，占 2 列）
     condition_label_ = lv_label_create(container_);
-    lv_label_set_text(condition_label_, "晴");
+    lv_label_set_text(condition_label_, "Sunny");
     lv_obj_set_grid_cell(condition_label_, LV_GRID_ALIGN_END, 2, 2, LV_GRID_ALIGN_CENTER, 1, 1);
 
     // 湿度（第 2 行，占 2 列）
     humidity_label_ = lv_label_create(container_);
-    lv_label_set_text(humidity_label_, "湿度: 45%");
+    lv_label_set_text(humidity_label_, "Humidity: 45%");
     lv_obj_set_grid_cell(humidity_label_, LV_GRID_ALIGN_START, 0, 2, LV_GRID_ALIGN_CENTER, 2, 1);
 
     // 风速（第 2 行，占 2 列）
     wind_label_ = lv_label_create(container_);
-    lv_label_set_text(wind_label_, "风速: 3m/s");
+    lv_label_set_text(wind_label_, "Wind: 3m/s");
     lv_obj_set_grid_cell(wind_label_, LV_GRID_ALIGN_END, 2, 2, LV_GRID_ALIGN_CENTER, 2, 1);
 
     // 更新时间（底部）
     time_label_ = lv_label_create(container_);
-    lv_label_set_text(time_label_, "更新时间: --:--");
+    lv_label_set_text(time_label_, "Updated: --:--");
     lv_obj_set_grid_cell(time_label_, LV_GRID_ALIGN_CENTER, 0, 4, LV_GRID_ALIGN_END, 2, 1);
 }
 

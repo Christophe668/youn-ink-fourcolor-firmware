@@ -20,7 +20,7 @@ LogPage::LogPage(lv_obj_t* parent) {
     lv_obj_set_size(log_label_, LV_PCT(100), LV_PCT(100));
     lv_obj_set_style_text_font(log_label_, &SourceHanSansSC_Regular_slim, 0);
     lv_label_set_long_mode(log_label_, LV_LABEL_LONG_WRAP);
-    lv_label_set_text(log_label_, "系统日志\n等待初始化...");
+    lv_label_set_text(log_label_, "System log\nWaiting to initialize...");
 
     ESP_LOGI(kTag, "Log page created");
 }

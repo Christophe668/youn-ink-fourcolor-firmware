@@ -66,12 +66,12 @@ private:
     // State
     TransferState state_ = kWaitingForConnection;
     std::string status_message_;
-    std::string title_text_ = "WiFi 传图";
+    std::string title_text_ = "WiFi Upload";
     std::string ssid_text_ = "InkScreen-AP";
     std::string password_text_ = "12345678";
     std::string url_text_ = "http://192.168.4.1";
     std::string hint_text_;
-    std::string exit_hint_text_ = "长按 BOOT 退出";
+    std::string exit_hint_text_ = "Hold BOOT to exit";
     std::function<void()> exit_callback_;
 
     // Fonts

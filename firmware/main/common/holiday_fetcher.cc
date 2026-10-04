@@ -335,7 +335,7 @@ const char* GetHolidayName(int year, int month, int day) {
 const char* GetMakeupLabel(int year, int month, int day) {
     const HolidayEntry* e = FindEntry(year, month, day);
     if (e && !e->is_rest) {
-        return "班";
+        return "Work";
     }
     return nullptr;
 }

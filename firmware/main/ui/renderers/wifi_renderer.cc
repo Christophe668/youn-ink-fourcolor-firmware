@@ -127,14 +127,14 @@ void WifiRenderer::Update(const WifiStatus& status) {
                 // 更新服务状态
                 if (server_label_) {
                     if (status.server_connected) {
-                        lv_label_set_text(server_label_, "服务: 在线");
+                        lv_label_set_text(server_label_, "Service: online");
                         lv_obj_set_style_text_color(server_label_, lv_color_hex(0x006600), 0);
                     } else if (!status.server_uri.empty()) {
-                        std::string uri = "服务: " + status.server_uri;
+                        std::string uri = "Service: " + status.server_uri;
                         lv_label_set_text(server_label_, uri.c_str());
                         lv_obj_set_style_text_color(server_label_, lv_color_hex(0x996600), 0);
                     } else {
-                        lv_label_set_text(server_label_, "服务: 离线");
+                        lv_label_set_text(server_label_, "Service: offline");
                         lv_obj_set_style_text_color(server_label_, lv_color_hex(0x990000), 0);
                     }
                 }
@@ -159,7 +159,7 @@ void WifiRenderer::RenderConnecting(const WifiStatus& status) {
 
     // 状态文本
     if (status_label_) {
-        lv_label_set_text(status_label_, "连接中...");
+        lv_label_set_text(status_label_, "Connecting...");
         lv_obj_set_style_text_color(status_label_, lv_color_hex(0x996600), 0);
     }
 
@@ -181,7 +181,7 @@ void WifiRenderer::RenderConnecting(const WifiStatus& status) {
 
     // 服务状态
     if (server_label_) {
-        lv_label_set_text(server_label_, "正在发现服务...");
+        lv_label_set_text(server_label_, "Discovering service...");
         lv_obj_set_style_text_color(server_label_, lv_color_hex(0x996600), 0);
         lv_obj_remove_flag(server_label_, LV_OBJ_FLAG_HIDDEN);
     }
@@ -202,7 +202,7 @@ void WifiRenderer::RenderConnected(const WifiStatus& status) {
 
     // 状态文本
     if (status_label_) {
-        lv_label_set_text(status_label_, "已连接");
+        lv_label_set_text(status_label_, "Connected");
         lv_obj_set_style_text_color(status_label_, lv_color_hex(0x006600), 0);
     }
 
@@ -226,14 +226,14 @@ void WifiRenderer::RenderConnected(const WifiStatus& status) {
     if (server_label_) {
         lv_obj_remove_flag(server_label_, LV_OBJ_FLAG_HIDDEN);
         if (status.server_connected) {
-            lv_label_set_text(server_label_, "服务: 在线");
+            lv_label_set_text(server_label_, "Service: online");
             lv_obj_set_style_text_color(server_label_, lv_color_hex(0x006600), 0);
         } else if (!status.server_uri.empty()) {
-            std::string uri = "服务: " + status.server_uri;
+            std::string uri = "Service: " + status.server_uri;
             lv_label_set_text(server_label_, uri.c_str());
             lv_obj_set_style_text_color(server_label_, lv_color_hex(0x996600), 0);
         } else {
-            lv_label_set_text(server_label_, "服务: 离线");
+            lv_label_set_text(server_label_, "Service: offline");
             lv_obj_set_style_text_color(server_label_, lv_color_hex(0x990000), 0);
         }
     }
@@ -253,7 +253,7 @@ void WifiRenderer::RenderDisconnected(const WifiStatus& status) {
 
     // 状态文本
     if (status_label_) {
-        lv_label_set_text(status_label_, "已断开");
+        lv_label_set_text(status_label_, "Disconnected");
         lv_obj_set_style_text_color(status_label_, lv_color_hex(0x990000), 0);
     }
 
@@ -270,12 +270,12 @@ void WifiRenderer::RenderDisconnected(const WifiStatus& status) {
     // 显示提示
     if (hint_label_) {
         lv_obj_remove_flag(hint_label_, LV_OBJ_FLAG_HIDDEN);
-        lv_label_set_text(hint_label_, "按 BOOT 重连");
+        lv_label_set_text(hint_label_, "BOOT to reconnect");
     }
 
     // 服务状态
     if (server_label_) {
-        lv_label_set_text(server_label_, "服务: 未连接");
+        lv_label_set_text(server_label_, "Service: not connected");
         lv_obj_set_style_text_color(server_label_, lv_color_hex(0x990000), 0);
         lv_obj_remove_flag(server_label_, LV_OBJ_FLAG_HIDDEN);
     }

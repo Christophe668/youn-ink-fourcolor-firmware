@@ -18,7 +18,7 @@ constexpr lv_coord_t kStepRowHeight = 24;
 constexpr int kStepCount = 7;
 
 const char* const kStepNames[kStepCount] = {
-    "RF", "音频", "RTC", "充电", "LED", "按键", "NFC"
+    "RF", "Audio", "RTC", "Charge", "LED", "Buttons", "NFC"
 };
 
 const char* StateText(FactoryTestStepState state) {
@@ -156,7 +156,7 @@ void FactoryTestPageAdapter::Build() {
     if (body_font) {
         lv_obj_set_style_text_font(header_title, body_font, 0);
     }
-    lv_label_set_text(header_title, "FT测试");
+    lv_label_set_text(header_title, "Factory test");
     lv_obj_align(header_title, LV_ALIGN_LEFT_MID, 0, 0);
 
     header_step_label_ = lv_label_create(header);

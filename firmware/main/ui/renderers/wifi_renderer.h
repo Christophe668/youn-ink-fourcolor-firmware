@@ -10,9 +10,9 @@ namespace ui {
 // 三种状态：连接中、已连接、断开
 
 enum class WifiState {
-    Connecting,   // 连接中：WiFi icon 闪烁 + "连接中..." + 进度条
+    Connecting,   // 连接中：WiFi icon 闪烁 + "Connecting..." + 进度条
     Connected,    // 已连接：实心 WiFi icon + SSID + 信号强度
-    Disconnected, // 断开：叉号 WiFi icon + "已断开" + "按 BOOT 重连"
+    Disconnected, // 断开：叉号 WiFi icon + "Disconnected" + "BOOT to reconnect"
 };
 
 struct WifiStatus {

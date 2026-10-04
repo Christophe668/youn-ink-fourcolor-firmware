@@ -527,7 +527,7 @@ void WebSocket::OnTcpData(const std::string& data) {
 
 bool WebSocket::SendControlFrame(uint8_t opcode, const void* data, size_t len) {
     if (len > 125) {
-        ESP_LOGE(TAG, "控制帧有效载荷过大");
+        ESP_LOGE(TAG, "Control frame payload too large");
         return false;
     }
 

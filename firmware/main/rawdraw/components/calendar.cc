@@ -32,38 +32,38 @@ struct SolarTermEntry {
 // Approximate solar term dates (fixed-day approximation)
 // In reality these shift by ±1 day depending on the year
 static const SolarTermEntry kSolarTerms[] = {
-    { 1,  5, "小寒" }, { 1, 20, "大寒" },
-    { 2,  4, "立春" }, { 2, 19, "雨水" },
-    { 3,  5, "惊蛰" }, { 3, 20, "春分" },
-    { 4,  4, "清明" }, { 4, 20, "谷雨" },
-    { 5,  5, "立夏" }, { 5, 21, "小满" },
-    { 6,  5, "芒种" }, { 6, 21, "夏至" },
-    { 7,  7, "小暑" }, { 7, 23, "大暑" },
-    { 8,  7, "立秋" }, { 8, 23, "处暑" },
-    { 9,  7, "白露" }, { 9, 23, "秋分" },
-    {10,  8, "寒露" }, {10, 23, "霜降" },
-    {11,  7, "立冬" }, {11, 22, "小雪" },
-    {12,  7, "大雪" }, {12, 22, "冬至" },
+    { 1,  5, "Minor Cold" }, { 1, 20, "Major Cold" },
+    { 2,  4, "Spring" }, { 2, 19, "Rain Water" },
+    { 3,  5, "Insects" }, { 3, 20, "Equinox" },
+    { 4,  4, "Qingming" }, { 4, 20, "Grain Rain" },
+    { 5,  5, "Summer" }, { 5, 21, "Grain Buds" },
+    { 6,  5, "Grain Ear" }, { 6, 21, "Solstice" },
+    { 7,  7, "Minor Heat" }, { 7, 23, "Major Heat" },
+    { 8,  7, "Autumn" }, { 8, 23, "End Heat" },
+    { 9,  7, "White Dew" }, { 9, 23, "Equinox" },
+    {10,  8, "Cold Dew" }, {10, 23, "Frost" },
+    {11,  7, "Winter" }, {11, 22, "Minor Snow" },
+    {12,  7, "Major Snow" }, {12, 22, "Solstice" },
 };
 
 static constexpr int kSolarTermCount = sizeof(kSolarTerms) / sizeof(kSolarTerms[0]);
 
 // Lunar month names (lunar calendar months 1-12)
 static const char* kLunarMonths[] = {
-    "正月", "二月", "三月", "四月", "五月", "六月",
-    "七月", "八月", "九月", "十月", "十一月", "腊月"
+    "M1", "M2", "M3", "M4", "M5", "M6",
+    "M7", "M8", "M9", "M10", "M11", "M12"
 };
 
 // Lunar day names
 static const char* kLunarDays[] = {
-    "初一", "初二", "初三", "初四", "初五", "初六", "初七", "初八", "初九", "初十",
-    "十一", "十二", "十三", "十四", "十五", "十六", "十七", "十八", "十九", "二十",
-    "廿一", "廿二", "廿三", "廿四", "廿五", "廿六", "廿七", "廿八", "廿九", "三十"
+    "1", "2", "3", "4", "5", "6", "7", "8", "9", "10",
+    "11", "12", "13", "14", "15", "16", "17", "18", "19", "20",
+    "21", "22", "23", "24", "25", "26", "27", "28", "29", "30"
 };
 
 // Weekday header characters
-static const char* kWeekdayChars[] = {"日", "一", "二", "三", "四", "五", "六"};
-static const char* kWeekdayFull[] = {"周日", "周一", "周二", "周三", "周四", "周五", "周六"};
+static const char* kWeekdayChars[] = {"S", "M", "T", "W", "T", "F", "S"};
+static const char* kWeekdayFull[] = {"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
 
 // Holidays (fixed-date solar holidays in Gregorian calendar)
 struct HolidayEntry {
@@ -73,20 +73,13 @@ struct HolidayEntry {
 };
 
 static const HolidayEntry kHolidays[] = {
-    { 1,  1, "元旦" },
-    { 2, 14, "情人节" },
-    { 3,  8, "妇女节" },
-    { 3, 12, "植树节" },
-    { 4,  1, "愚人节" },
-    { 5,  1, "劳动节" },
-    { 5,  4, "青年节" },
-    { 6,  1, "儿童节" },
-    { 7,  1, "建党节" },
-    { 8,  1, "建军节" },
-    { 9, 10, "教师节" },
-    {10,  1, "国庆节" },
-    {10, 31, "万圣节" },
-    {12, 25, "圣诞节" },
+    { 1,  1, "New Year" },
+    { 2, 14, "Valentine" },
+    { 3,  8, "Women's" },
+    { 4,  1, "Fools" },
+    { 5,  1, "Labour" },
+    {10, 31, "Halloween" },
+    {12, 25, "Xmas" },
 };
 
 static constexpr int kHolidayCount = sizeof(kHolidays) / sizeof(kHolidays[0]);
@@ -168,8 +161,8 @@ static constexpr int kLunarMaxYear = 2050;
 static constexpr int kLunarYearCount = kLunarMaxYear - kLunarMinYear + 1;  // 51
 
 // Tian Gan (天干) and Di Zhi (地支) for year names
-static const char* kTianGan[] = {"甲", "乙", "丙", "丁", "戊", "己", "庚", "辛", "壬", "癸"};
-static const char* kDiZhi[] = {"子", "丑", "寅", "卯", "辰", "巳", "午", "未", "申", "酉", "戌", "亥"};
+static const char* kTianGan[] = {"Wood ", "Wood ", "Fire ", "Fire ", "Earth ", "Earth ", "Metal ", "Metal ", "Water ", "Water "};
+static const char* kDiZhi[] = {"Rat", "Ox", "Tiger", "Rabbit", "Dragon", "Snake", "Horse", "Goat", "Monkey", "Rooster", "Dog", "Pig"};
 
 // Leap month info for 2000-2050 (0 = no leap, 1-12 = which month has leap)
 // Derived from lunardate library validation
@@ -269,7 +262,7 @@ Calendar::LunarDate Calendar::ToLunarDate(int year, int month, int day) {
 }
 
 const char* Calendar::GetLunarYearName(int year) {
-    static char buf[8];
+    static char buf[24];
     if (year < 1900 || year > 2100) return "";
     int tg = (year - 4) % 10;
     int dz = (year - 4) % 12;
@@ -584,7 +577,7 @@ void Calendar::DrawHeader(uint8_t* fb, int width) const {
 
     // Title: "2026年 4月" centered
     char title[32];
-    snprintf(title, sizeof(title), "%d年 %d月", year_, month_);
+    snprintf(title, sizeof(title), "%d-%02d", year_, month_);
     int title_w = MeasureTextWidth(title, title_font_);
     int title_x = x_ + (w_ - title_w) / 2;
     int title_text_y = y_ + (title_bar_h - title_font_->line_height) / 2;
@@ -685,20 +678,11 @@ void Calendar::DrawGrid(uint8_t* fb, int width, int y) const {
         const char* holiday = nullptr;
         const char* makeup_label = nullptr;
         if (is_current_month) {
-            solar_term = GetSolarTerm(month_, display_day);
             for (int h = 0; h < kHolidayCount; h++) {
                 if (kHolidays[h].month == month_ && kHolidays[h].day == display_day) {
                     holiday = kHolidays[h].name;
                     break;
                 }
-            }
-            // Official State Council holiday / makeup workday
-            int q_year = year_, q_month = month_, q_day = display_day;
-            if (holiday_fetcher::IsHoliday(q_year, q_month, q_day)) {
-                holiday = holiday_fetcher::GetHolidayName(q_year, q_month, q_day);
-                if (!holiday) holiday = "休";
-            } else if (holiday_fetcher::IsMakeupWorkday(q_year, q_month, q_day)) {
-                makeup_label = holiday_fetcher::GetMakeupLabel(q_year, q_month, q_day);
             }
         }
 
@@ -735,7 +719,7 @@ void Calendar::DrawGrid(uint8_t* fb, int width, int y) const {
         }
 
         // Lunar date or solar term / holiday / makeup sub-label
-        if (show_lunar_ || solar_term || holiday || makeup_label) {
+        if (solar_term || holiday || makeup_label) {
             const char* label = nullptr;
             bool is_solar_term = false;
 
@@ -746,14 +730,6 @@ void Calendar::DrawGrid(uint8_t* fb, int width, int y) const {
                 label = holiday;
             } else if (makeup_label) {
                 label = makeup_label;
-            } else if (show_lunar_ && is_current_month) {
-                LunarDate ld = ToLunarDate(year_, month_, display_day);
-                if (ld.lunar_day == 1) {
-                    // Show lunar month name on 1st of lunar month
-                    label = GetLunarMonthName(ld.lunar_month);
-                } else {
-                    label = GetLunarDayName(ld.lunar_day);
-                }
             }
 
             if (label && *label) {
@@ -780,18 +756,18 @@ void Calendar::DrawBottomInfo(uint8_t* fb, int width, int y) const {
     char buf[80];
     if (year_ == today_year_ && month_ == today_month_) {
         int weekday_idx = WeekdayOfDate(today_year_, today_month_, today_day_);
-        snprintf(buf, sizeof(buf), "今天 %d月%d日 %s",
+        snprintf(buf, sizeof(buf), "Today %d/%d %s",
                  today_month_, today_day_, kWeekdayFull[weekday_idx]);
 
         // Add lunar date
         LunarDate ld = ToLunarDate(today_year_, today_month_, today_day_);
         const char* year_name = GetLunarYearName(today_year_);
         int extra_len = snprintf(buf + strlen(buf), sizeof(buf) - strlen(buf),
-                                 " %s年%s%s", year_name, GetLunarMonthName(ld.lunar_month), GetLunarDayName(ld.lunar_day));
+                                 " %s year %s %s", year_name, GetLunarMonthName(ld.lunar_month), GetLunarDayName(ld.lunar_day));
         (void)extra_len;
     } else {
         int dim = DaysInMonth(year_, month_);
-        snprintf(buf, sizeof(buf), "%d年%d月 共%d天", year_, month_, dim);
+        snprintf(buf, sizeof(buf), "%d-%02d · %d days", year_, month_, dim);
     }
 
     int text_w = MeasureTextWidth(buf, small_font_);

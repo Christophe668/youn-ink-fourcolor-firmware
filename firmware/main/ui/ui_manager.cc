@@ -36,7 +36,7 @@ void UiManager::Init(lv_display_t* display) {
 
     // 初始化状态栏显示当前页面标题
     StatusBarData init_data;
-    init_data.page_title = "对话";
+    init_data.page_title = "Chat";
     init_data.wifi_connected = false;
     init_data.server_connected = false;
     init_data.battery_level = -1;
@@ -94,13 +94,13 @@ void UiManager::SwitchPage(PageId page) {
 
     // 更新状态栏中的页面标题
     const char* titles[] = {
-        "对话",     // 0
+        "Chat",     // 0
         "Todo",     // 1
-        "日志",     // 2
-        "人生进度", // 3
-        "老黄历",   // 4
-        "天气",     // 5
-        "设置"      // 6
+        "Log",     // 2
+        "Life progress", // 3
+        "Almanac",   // 4
+        "Weather",     // 5
+        "Settings"      // 6
     };
     StatusBarData data;
     data.page_title = titles[index];

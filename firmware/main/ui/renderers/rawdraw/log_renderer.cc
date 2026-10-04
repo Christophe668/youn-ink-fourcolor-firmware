@@ -60,13 +60,13 @@ void LogRenderer::CollectLogEntries() {
     s_log_head = 0;
 
     // Add boot event
-    AddLogEntry("BOOT", "系统启动");
+    AddLogEntry("BOOT", "System started");
 
     // Add memory stats
     size_t free_heap = heap_caps_get_free_size(MALLOC_CAP_8BIT);
     size_t free_psram = heap_caps_get_free_size(MALLOC_CAP_SPIRAM);
     char mem_buf[64];
-    snprintf(mem_buf, sizeof(mem_buf), "可用内存: %zu KB", free_heap / 1024);
+    snprintf(mem_buf, sizeof(mem_buf), "Free memory: %zu KB", free_heap / 1024);
     AddLogEntry("MEM", mem_buf);
 
     if (free_psram > 0) {
@@ -75,19 +75,19 @@ void LogRenderer::CollectLogEntries() {
     }
 
     // Add chip info
-    AddLogEntry("CHIP", "芯片: ESP32-S3");
+    AddLogEntry("CHIP", "Chip: ESP32-S3");
 
     // Add firmware version
     AddLogEntry("FW", "v" PROJECT_VER);
 
     // Add RTC status
-    AddLogEntry("RTC", "RTC 已初始化");
+    AddLogEntry("RTC", "RTC initialized");
 
     // Add WiFi placeholder (could be wired to real WiFi state)
-    AddLogEntry("WIFI", "等待连接...");
+    AddLogEntry("WIFI", "Waiting for connection...");
 
     // Add LAN placeholder
-    AddLogEntry("LAN", "等待服务器...");
+    AddLogEntry("LAN", "Waiting for server...");
 }
 
 void LogRenderer::AddLogEntry(const char* tag, const char* message) {
@@ -123,7 +123,7 @@ void LogRenderer::Render(uint8_t* fb, int width, int height) {
     CollectLogEntries();
 
     if (s_log_count == 0) {
-        const char* empty_text = "暂无日志";
+        const char* empty_text = "No logs";
         int text_w = MeasureTextWidth(empty_text, font_);
         int text_x = (width - text_w) / 2;
         int text_y = content_top + (content_height / 2);
@@ -200,13 +200,13 @@ void LogRenderer::DrawTitleBar(uint8_t* fb, int width) {
 
     // FIX: 改用 InkCenteredTextTopYInBox，避免 line_height 居中导致中文偏上
     // 参见 wiki/projects/notellm-baseline-alignment.md
-    int title_text_y = InkCenteredTextTopYInBox(font_, "日志", title_y_start, title_bar_h, 1);
-    DrawText(fb, width, Style::kSpacingLG, title_text_y, "日志", font_, text);
+    int title_text_y = InkCenteredTextTopYInBox(font_, "Log", title_y_start, title_bar_h, 1);
+    DrawText(fb, width, Style::kSpacingLG, title_text_y, "Log", font_, text);
 
     // Entry count (right-aligned)
     if (s_log_count > 0) {
-        char count_buf[16];
-        snprintf(count_buf, sizeof(count_buf), "%d条", s_log_count);
+        char count_buf[24];
+        snprintf(count_buf, sizeof(count_buf), "%d entries", s_log_count);
         int count_w = MeasureTextWidth(count_buf, font_);
         int count_x = width - count_w - Style::kSpacingLG;
         DrawText(fb, width, count_x, title_text_y, count_buf, font_, secondary);

@@ -23,17 +23,17 @@ extern const lv_font_t SourceHanSansSC_Medium_slim;
 extern const lv_font_t weather_icons_48;
 
 // Weekday characters (matches calendar.cc)
-static const char* kWeekdayFull[] = {"周日", "周一", "周二", "周三", "周四", "周五", "周六"};
+static const char* kWeekdayFull[] = {"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
 
 // Lunar month/day names (same as calendar.cc)
 static const char* kLunarMonths[] = {
-    "正月", "二月", "三月", "四月", "五月", "六月",
-    "七月", "八月", "九月", "十月", "十一月", "腊月"
+    "M1", "M2", "M3", "M4", "M5", "M6",
+    "M7", "M8", "M9", "M10", "M11", "M12"
 };
 static const char* kLunarDays[] = {
-    "初一", "初二", "初三", "初四", "初五", "初六", "初七", "初八", "初九", "初十",
-    "十一", "十二", "十三", "十四", "十五", "十六", "十七", "十八", "十九", "二十",
-    "廿一", "廿二", "廿三", "廿四", "廿五", "廿六", "廿七", "廿八", "廿九", "三十"
+    "1", "2", "3", "4", "5", "6", "7", "8", "9", "10",
+    "11", "12", "13", "14", "15", "16", "17", "18", "19", "20",
+    "21", "22", "23", "24", "25", "26", "27", "28", "29", "30"
 };
 
 // Tian Gan / Di Zhi (used via Calendar::GetLunarYearName)
@@ -47,18 +47,18 @@ struct SolarTermEntry {
     const char* name;
 };
 static const SolarTermEntry kSolarTerms[] = {
-    { 1,  5, "小寒" }, { 1, 20, "大寒" },
-    { 2,  4, "立春" }, { 2, 19, "雨水" },
-    { 3,  5, "惊蛰" }, { 3, 20, "春分" },
-    { 4,  4, "清明" }, { 4, 20, "谷雨" },
-    { 5,  5, "立夏" }, { 5, 21, "小满" },
-    { 6,  5, "芒种" }, { 6, 21, "夏至" },
-    { 7,  7, "小暑" }, { 7, 23, "大暑" },
-    { 8,  7, "立秋" }, { 8, 23, "处暑" },
-    { 9,  7, "白露" }, { 9, 23, "秋分" },
-    {10,  8, "寒露" }, {10, 23, "霜降" },
-    {11,  7, "立冬" }, {11, 22, "小雪" },
-    {12,  7, "大雪" }, {12, 22, "冬至" },
+    { 1,  5, "Minor Cold" }, { 1, 20, "Major Cold" },
+    { 2,  4, "Spring" }, { 2, 19, "Rain Water" },
+    { 3,  5, "Insects" }, { 3, 20, "Equinox" },
+    { 4,  4, "Qingming" }, { 4, 20, "Grain Rain" },
+    { 5,  5, "Summer" }, { 5, 21, "Grain Buds" },
+    { 6,  5, "Grain Ear" }, { 6, 21, "Solstice" },
+    { 7,  7, "Minor Heat" }, { 7, 23, "Major Heat" },
+    { 8,  7, "Autumn" }, { 8, 23, "End Heat" },
+    { 9,  7, "White Dew" }, { 9, 23, "Equinox" },
+    {10,  8, "Cold Dew" }, {10, 23, "Frost" },
+    {11,  7, "Winter" }, {11, 22, "Minor Snow" },
+    {12,  7, "Major Snow" }, {12, 22, "Solstice" },
 };
 
 static const char* GetSolarTerm(int month, int day) {
@@ -73,28 +73,28 @@ static const char* GetSolarTerm(int month, int day) {
 // Simplified yiji (宜忌) based on lunar day patterns
 // This is a traditional approximation, not a full almanac calculation
 static const char* kYiTable[][4] = {
-    {"祭祀", "祈福", "出行", "动土"},
-    {"嫁娶", "纳采", "订盟", "出行"},
-    {"开市", "交易", "立券", "纳财"},
-    {"破土", "启钻", "安葬", "修坟"},
-    {"修造", "动土", "起基", "定磉"},
-    {"安床", "开市", "交易", "立券"},
-    {"祭祀", "沐浴", "扫舍", "修造"},
-    {"祈福", "求嗣", "出行", "解除"},
-    {"嫁娶", "祭祀", "祈福", "出行"},
-    {"开市", "立券", "交易", "纳财"},
+    {"Offerings", "Prayer", "Travel", "Groundwork"},
+    {"Wedding", "Betrothal", "Contracts", "Travel"},
+    {"Open shop", "Trade", "Deeds", "Income"},
+    {"Break ground", "Exhumation", "Burial", "Tomb repair"},
+    {"Building", "Groundwork", "Lay base", "Foundations"},
+    {"Set up bed", "Open shop", "Trade", "Deeds"},
+    {"Offerings", "Bathing", "Cleaning", "Building"},
+    {"Prayer", "Pray for kids", "Travel", "Cleansing"},
+    {"Wedding", "Offerings", "Prayer", "Travel"},
+    {"Open shop", "Deeds", "Trade", "Income"},
 };
 static const char* kJiTable[][3] = {
-    {"破土", "安葬", "启钻"},
-    {"开仓", "出货财", "纳粟"},
-    {"词讼", "争执", "诽谤"},
-    {"嫁娶", "出行", "祈福"},
-    {"安床", "移徙", "入宅"},
-    {"祭祀", "修造", "动土"},
-    {"开市", "纳财", "交易"},
-    {"出行", "解除", "拆卸"},
-    {"破土", "启钻", "安葬"},
-    {"纳采", "订盟", "嫁娶"},
+    {"Break ground", "Burial", "Exhumation"},
+    {"Open storage", "Spending", "Harvest"},
+    {"Lawsuits", "Arguments", "Gossip"},
+    {"Wedding", "Travel", "Prayer"},
+    {"Set up bed", "Moving", "Move in"},
+    {"Offerings", "Building", "Groundwork"},
+    {"Open shop", "Income", "Trade"},
+    {"Travel", "Cleansing", "Demolition"},
+    {"Break ground", "Exhumation", "Burial"},
+    {"Betrothal", "Contracts", "Wedding"},
 };
 
 namespace rawdraw {
@@ -156,11 +156,11 @@ void AlmanacRenderer::Render(uint8_t* fb, int width, int height) {
     // e.g. "丙午年 三月初八"
     char lunar_full[32];
     if (lunar_.lunar_month > 0 && lunar_.lunar_day > 0) {
-        snprintf(lunar_full, sizeof(lunar_full), "%s年 %s%s",
+        snprintf(lunar_full, sizeof(lunar_full), "%s year %s %s",
                  lunar_year_name_, GetLunarMonthName(lunar_.lunar_month),
                  GetLunarDayName(lunar_.lunar_day));
     } else {
-        snprintf(lunar_full, sizeof(lunar_full), "%s年", lunar_year_name_);
+        snprintf(lunar_full, sizeof(lunar_full), "%s year", lunar_year_name_);
     }
 
     // Draw centered
@@ -171,7 +171,7 @@ void AlmanacRenderer::Render(uint8_t* fb, int width, int height) {
 
     // === Gregorian date ===
     char greg_buf[64];
-    snprintf(greg_buf, sizeof(greg_buf), "公历 %d年%d月%d日 %s",
+    snprintf(greg_buf, sizeof(greg_buf), "%d-%02d-%02d %s",
              year_, month_, day_, kWeekdayFull[weekday_]);
     int greg_w = MeasureTextWidth(greg_buf, font_);
     int greg_x = (width - greg_w) / 2;
@@ -181,7 +181,7 @@ void AlmanacRenderer::Render(uint8_t* fb, int width, int height) {
     // === Solar term (if today) ===
     if (solar_term_) {
         char st_buf[32];
-        snprintf(st_buf, sizeof(st_buf), "【%s】", solar_term_);
+        snprintf(st_buf, sizeof(st_buf), "[%s]", solar_term_);
         int st_w = MeasureTextWidth(st_buf, title_font_);
         int st_x = (width - st_w) / 2;
         DrawText(fb, width, st_x, y, st_buf, title_font_, accent);
@@ -193,26 +193,32 @@ void AlmanacRenderer::Render(uint8_t* fb, int width, int height) {
     y += Style::kSpacingSM;
 
     // === 宜 (auspicious) section ===
-    DrawText(fb, width, Style::kSpacingLG, y, "宜", title_font_, accent);
-    int yi_label_w = MeasureTextWidth("宜", title_font_);
+    DrawText(fb, width, Style::kSpacingLG, y, "Do", title_font_, accent);
+    int yi_label_w = MeasureTextWidth("Do", title_font_);
     int yi_start = Style::kSpacingLG + yi_label_w + Style::kSpacingSM;
     int yi_y = y;
+    // English words vary in width, so flow items by measured width
+    int yi_x = yi_start;
     for (int i = 0; i < 4; i++) {
-        char buf[16];
-        snprintf(buf, sizeof(buf), "%s", yi_[i]);
-        DrawText(fb, width, yi_start + i * 60, yi_y, buf, font_, text);
+        const int item_w = MeasureTextWidth(yi_[i], font_);
+        if (yi_x + item_w > width - Style::kSpacingLG) break;
+        DrawText(fb, width, yi_x, yi_y, yi_[i], font_, text);
+        yi_x += item_w + Style::kSpacingMD;
     }
     y += font_->line_height + Style::kSpacingMD;
 
     // === 忌 (inauspicious) section ===
-    DrawText(fb, width, Style::kSpacingLG, y, "忌", title_font_, danger);
-    int ji_label_w = MeasureTextWidth("忌", title_font_);
+    DrawText(fb, width, Style::kSpacingLG, y, "Avoid", title_font_, danger);
+    int ji_label_w = MeasureTextWidth("Avoid", title_font_);
     int ji_start = Style::kSpacingLG + ji_label_w + Style::kSpacingSM;
     int ji_y = y;
+    // English words vary in width, so flow items by measured width
+    int ji_x = ji_start;
     for (int i = 0; i < 3; i++) {
-        char buf[16];
-        snprintf(buf, sizeof(buf), "%s", ji_[i]);
-        DrawText(fb, width, ji_start + i * 60, ji_y, buf, font_, text);
+        const int item_w = MeasureTextWidth(ji_[i], font_);
+        if (ji_x + item_w > width - Style::kSpacingLG) break;
+        DrawText(fb, width, ji_x, ji_y, ji_[i], font_, text);
+        ji_x += item_w + Style::kSpacingMD;
     }
 
     needs_full_refresh_ = false;
@@ -240,8 +246,8 @@ void AlmanacRenderer::DrawTitleBar(uint8_t* fb, int width) {
 
     // FIX: 改用 InkCenteredTextTopYInBox，避免 line_height 居中导致中文偏上
     // 参见 wiki/projects/notellm-baseline-alignment.md
-    int title_text_y = InkCenteredTextTopYInBox(font_, "老黄历", title_y_start, title_bar_h, 1);
-    DrawText(fb, width, Style::kSpacingLG, title_text_y, "老黄历", font_, text);
+    int title_text_y = InkCenteredTextTopYInBox(font_, "Almanac", title_y_start, title_bar_h, 1);
+    DrawText(fb, width, Style::kSpacingLG, title_text_y, "Almanac", font_, text);
 }
 
 const char* AlmanacRenderer::GetLunarMonthName(int month) {

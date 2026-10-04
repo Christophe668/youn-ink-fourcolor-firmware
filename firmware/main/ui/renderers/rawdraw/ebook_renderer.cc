@@ -66,11 +66,11 @@ void EbookRenderer::RenderFileList(uint8_t* fb, int width, int height) {
     DrawStyledRect(fb, width, {0, Style::kStatusBarHeight + 1, width, height_ - Style::kStatusBarHeight - 1}, bg_style);
 
     if (files_.empty()) {
-        const char* hint = "暂无TXT文件";
+        const char* hint = "No TXT files";
         int hint_w = MeasureTextWidth(hint, font_);
         DrawText(fb, width, (width - hint_w) / 2, kListY + 80, hint, font_, text);
-        DrawText(fb, width, (width - MeasureTextWidth("推送TXT到设备", font_)) / 2,
-                 kListY + 110, "推送TXT到设备", font_, secondary);
+        DrawText(fb, width, (width - MeasureTextWidth("Push a TXT to the device", font_)) / 2,
+                 kListY + 110, "Push a TXT to the device", font_, secondary);
     } else {
         // Draw file list
         int visible_start = std::max(0, selected_index_ - 5);
@@ -97,13 +97,13 @@ void EbookRenderer::RenderFileList(uint8_t* fb, int width, int height) {
     // Footer hints
     DrawStyledRoundRect(fb, width, height, {14, kFooterY, 110, kFooterH}, Style::kBorderRadiusSM, footer_style);
     DrawText(fb, width, 34,
-             InkCenteredTextTopY(font_, "BOOT 选择", kFooterY + kFooterH / 2, 0),
-             "BOOT 选择", font_, footer_style.fg);
+             InkCenteredTextTopY(font_, "BOOT select", kFooterY + kFooterH / 2, 0),
+             "BOOT select", font_, footer_style.fg);
 
     DrawStyledRoundRect(fb, width, height, {142, kFooterY, 130, kFooterH}, Style::kBorderRadiusSM, footer_style);
     DrawText(fb, width, 160,
-             InkCenteredTextTopY(font_, "双击返回", kFooterY + kFooterH / 2, 0),
-             "双击返回", font_, footer_style.fg);
+             InkCenteredTextTopY(font_, "Double-click back", kFooterY + kFooterH / 2, 0),
+             "Double-click back", font_, footer_style.fg);
 }
 
 void EbookRenderer::RenderReader(uint8_t* fb, int width, int height) {
@@ -131,14 +131,14 @@ void EbookRenderer::RenderReaderPage(uint8_t* fb, int width, int height, int con
     const Color secondary = theme.ColorFor(ThemeToken::TextSecondary);
 
     if (reader_content_.empty()) {
-        const char* empty_hint = "文件为空或读取失败";
+        const char* empty_hint = "File empty or unreadable";
         const int hint_w = MeasureTextWidth(empty_hint, font_);
         DrawText(fb, width, (width - hint_w) / 2,
                  InkCenteredTextTopY(font_, empty_hint, content_y + 42, 0),
                  empty_hint, font_, text, height);
         DrawText(fb, width, 24,
-                 InkCenteredTextTopY(font_, "请重新推送 TXT 后再打开", content_y + 74, 0),
-                 "请重新推送 TXT 后再打开", font_, secondary, height);
+                 InkCenteredTextTopY(font_, "Push the TXT again, then open", content_y + 74, 0),
+                 "Push the TXT again, then open", font_, secondary, height);
     } else {
         const int chars_per_page = CharsPerPage();
         int start_char = current_page_ * chars_per_page;

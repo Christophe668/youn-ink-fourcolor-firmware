@@ -124,8 +124,8 @@ void NewsRenderer::Render(uint8_t* fb, int width, int height) {
 
     if (items_.empty()) {
         Modal modal;
-        modal.SetTitle("暂无新闻");
-        modal.SetBodyFooter("等待数据");
+        modal.SetTitle("No news");
+        modal.SetBodyFooter("Waiting for data");
         modal.CenterInScreen(width, height, 52);
         modal.Draw(fb, width, height);
     } else {
@@ -149,20 +149,20 @@ void NewsRenderer::Render(uint8_t* fb, int width, int height) {
     DrawStyledRoundRect(fb, width, height, {kNewsPanelX, kNewsFooterY, kNewsPanelW, kNewsFooterH},
                         Style::kBorderRadiusSM, panel_style);
     if (preview_open_) {
-        const char* boot_hint = footer_focus_ == 1 ? "▶朗读" : "▶关闭";
+        const char* boot_hint = footer_focus_ == 1 ? "▶Read aloud" : "▶Close";
         DrawText(fb, width, 54,
-                 InkCenteredTextTopY(font_, "UP/DN 选按钮", kNewsFooterY + kNewsFooterH / 2, 0),
-                 "UP/DN 选按钮", font_, secondary);
+                 InkCenteredTextTopY(font_, "UP/DN pick button", kNewsFooterY + kNewsFooterH / 2, 0),
+                 "UP/DN pick button", font_, secondary);
         DrawText(fb, width, 262,
                  InkCenteredTextTopY(font_, boot_hint, kNewsFooterY + kNewsFooterH / 2, 0),
                  boot_hint, font_, text);
     } else {
         DrawText(fb, width, 54,
-                 InkCenteredTextTopY(font_, "UP/DN 翻页", kNewsFooterY + kNewsFooterH / 2, 0),
-                 "UP/DN 翻页", font_, secondary);
+                 InkCenteredTextTopY(font_, "UP/DN page", kNewsFooterY + kNewsFooterH / 2, 0),
+                 "UP/DN page", font_, secondary);
         DrawText(fb, width, 262,
-                 InkCenteredTextTopY(font_, "BOOT 打开", kNewsFooterY + kNewsFooterH / 2, 0),
-                 "BOOT 打开", font_, text);
+                 InkCenteredTextTopY(font_, "BOOT open", kNewsFooterY + kNewsFooterH / 2, 0),
+                 "BOOT open", font_, text);
     }
 
     needs_full_refresh_ = false;
@@ -178,7 +178,7 @@ void NewsRenderer::RenderItem(uint8_t* fb, int width, int y, int index, bool sel
     Rect row{kNewsPanelX + 1, y, kNewsPanelW - 2, kItemH};
 
     const int center_y = row.y + row.h / 2;
-    const int text_y = InkCenteredTextTopY(font_, "字", center_y, 0);
+    const int text_y = InkCenteredTextTopY(font_, "chars", center_y, 0);
     char index_buf[16];
     snprintf(index_buf, sizeof(index_buf), "%d", index + 1);
     DrawText(fb, width, row.x + 8, text_y, index_buf, font_, selected ? selected_style.border : secondary);
@@ -210,8 +210,8 @@ void NewsRenderer::DrawPreviewModal(uint8_t* fb, int width, int height) {
     const Color secondary = theme.ColorFor(ThemeToken::TextSecondary);
     const Color accent = theme.ColorFor(ThemeToken::Accent);
     Modal modal;
-    modal.SetTitle("新闻预览");
-    modal.SetBodyFooter(footer_focus_ == 1 ? "朗读" : "关闭");
+    modal.SetTitle("News");
+    modal.SetBodyFooter(footer_focus_ == 1 ? "Read aloud" : "Off");
     modal.CenterInScreen(width, height, 36);
     modal.Draw(fb, width, height);
 

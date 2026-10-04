@@ -47,25 +47,25 @@ WeatherIcon ParseWeatherIcon(const char* text) {
     if (!text || !text[0]) return WeatherIcon::Unknown;
 
     // Sunny variants
-    if (strstr(text, "晴") != nullptr) return WeatherIcon::Sunny;
+    if (strstr(text, "晴") != nullptr || strcasestr(text, "sunny") || strcasestr(text, "clear")) return WeatherIcon::Sunny;
 
     // Cloudy
-    if (strstr(text, "多云") != nullptr) return WeatherIcon::Cloudy;
+    if (strstr(text, "多云") != nullptr || strcasestr(text, "cloud")) return WeatherIcon::Cloudy;
     if (strstr(text, "晴间多云") != nullptr) return WeatherIcon::Cloudy;
 
     // Overcast
-    if (strstr(text, "阴") != nullptr) return WeatherIcon::Overcast;
+    if (strstr(text, "阴") != nullptr || strcasestr(text, "overcast")) return WeatherIcon::Overcast;
 
     // Rain (all types)
-    if (strstr(text, "雨") != nullptr) return WeatherIcon::Rain;
+    if (strstr(text, "雨") != nullptr || strcasestr(text, "rain") || strcasestr(text, "shower") || strcasestr(text, "drizzle") || strcasestr(text, "thunder")) return WeatherIcon::Rain;
 
     // Snow
-    if (strstr(text, "雪") != nullptr) return WeatherIcon::Snow;
+    if (strstr(text, "雪") != nullptr || strcasestr(text, "snow") || strcasestr(text, "sleet")) return WeatherIcon::Snow;
 
     // Fog/Haze
-    if (strstr(text, "雾") != nullptr) return WeatherIcon::Fog;
-    if (strstr(text, "霾") != nullptr) return WeatherIcon::Fog;
-    if (strstr(text, "沙尘") != nullptr) return WeatherIcon::Fog;
+    if (strstr(text, "雾") != nullptr || strcasestr(text, "fog") || strcasestr(text, "mist")) return WeatherIcon::Fog;
+    if (strstr(text, "霾") != nullptr || strcasestr(text, "haze")) return WeatherIcon::Fog;
+    if (strstr(text, "沙尘") != nullptr || strcasestr(text, "dust") || strcasestr(text, "sand")) return WeatherIcon::Fog;
 
     return WeatherIcon::Unknown;
 }
@@ -178,7 +178,7 @@ static bool ParseForecastJson(const char* json, WeatherData* out) {
     }
 
     out->forecast.clear();
-    const char* labels[3] = {"今天", "明天", "后天"};
+    const char* labels[3] = {"Today", "Tomorrow", "In 2 days"};
     int index = 0;
     cJSON* day = nullptr;
     cJSON_ArrayForEach(day, daily) {
@@ -324,7 +324,7 @@ static void DoFetch(void* arg) {
 
     char url[256];
     snprintf(url, sizeof(url),
-             "https://devapi.qweather.com/v7/weather/now?key=%s&location=%s",
+             "https://devapi.qweather.com/v7/weather/now?key=%s&location=%s&lang=en",
              s_api_key, s_city_code);
     ESP_LOGI(kTag, "Fetching current weather: %s", url);
     if (!HttpGet(url) || !ParseNowJson(s_response_buf, &data)) {
@@ -334,7 +334,7 @@ static void DoFetch(void* arg) {
     }
 
     snprintf(url, sizeof(url),
-             "https://devapi.qweather.com/v7/weather/3d?key=%s&location=%s",
+             "https://devapi.qweather.com/v7/weather/3d?key=%s&location=%s&lang=en",
              s_api_key, s_city_code);
     ESP_LOGI(kTag, "Fetching forecast: %s", url);
     if (!HttpGet(url) || !ParseForecastJson(s_response_buf, &data)) {
@@ -342,7 +342,7 @@ static void DoFetch(void* arg) {
     }
 
     snprintf(url, sizeof(url),
-             "https://devapi.qweather.com/v7/air/now?key=%s&location=%s",
+             "https://devapi.qweather.com/v7/air/now?key=%s&location=%s&lang=en",
              s_api_key, s_city_code);
     ESP_LOGI(kTag, "Fetching air quality: %s", url);
     if (!HttpGet(url) || !ParseAirJson(s_response_buf, &data)) {

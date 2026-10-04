@@ -34,11 +34,11 @@ static constexpr int EXPECTED_LIFESPAN_YEARS = 80;
 
 // Motivational quotes (rotated by index)
 static const char* kQuotes[] = {
-    "时间是最公平的，\n每人每天都只有24小时",
-    "余生很长，何必慌张；\n余生很短，何必平凡",
-    "把每一天当成\n生命中最后一天来过",
-    "种一棵树最好的时间\n是十年前，其次是现在",
-    "人生没有白走的路，\n每一步都算数",
+    "Time is fair:\neveryone gets 24 hours a day",
+    "Life is long, why rush;\nlife is short, why settle",
+    "Live each day\nas if it were your last",
+    "Best time to plant a tree\nwas 10 years ago. Next is now",
+    "No road is wasted;\nevery step counts",
 };
 static constexpr int kNumQuotes = sizeof(kQuotes) / sizeof(kQuotes[0]);
 
@@ -164,7 +164,7 @@ void LifeBarRenderer::Render(uint8_t* fb, int width, int height) {
 
     if (!visible_) {
         // Show hidden placeholder
-        const char* msg = "人生进度页已隐藏";
+        const char* msg = "Life progress page is hidden";
         int msg_w = MeasureTextWidth(msg, small_font_);
         int msg_x = (width - msg_w) / 2;
         msg_x = (msg_x + 7) & ~7;
@@ -173,7 +173,7 @@ void LifeBarRenderer::Render(uint8_t* fb, int width, int height) {
         int msg_y = InkCenteredTextTopY(small_font_, msg, height / 2, 0);
         DrawText(fb, width, msg_x, msg_y, msg, small_font_, text);
 
-        const char* hint = "在设置中重新开启";
+        const char* hint = "Turn it back on in Settings";
         int hint_w = MeasureTextWidth(hint, small_font_);
         int hint_x = (width - hint_w) / 2;
         hint_x = (hint_x + 7) & ~7;
@@ -203,14 +203,14 @@ void LifeBarRenderer::RenderHeader(uint8_t* fb, int width, int y) const {
     const Color text = theme.ColorFor(ThemeToken::TextPrimary);
     const Color secondary = theme.ColorFor(ThemeToken::TextSecondary);
     // Title
-    const char* title = "人生进度";
+    const char* title = "Life progress";
     int title_w = MeasureTextWidth(title, title_font_);
     int title_x = (width - title_w) / 2;
     title_x = (title_x + 7) & ~7;
     DrawText(fb, width, title_x, y, title, title_font_, text);
 
     // Subtitle
-    const char* sub = "每一天都值得珍惜";
+    const char* sub = "Make every day count";
     int sub_w = MeasureTextWidth(sub, small_font_);
     int sub_x = (width - sub_w) / 2;
     sub_x = (sub_x + 7) & ~7;
@@ -268,7 +268,7 @@ void LifeBarRenderer::RenderGauge(uint8_t* fb, int width, int y_start, int avail
 
     // Line 1: Age (consistent with gauge percentage)
     if (stats_y + small_font_->line_height <= bottom_limit) {
-        snprintf(buf, sizeof(buf), "%d岁%d月  已过%d%%", age_years_, age_months_, life_pct_);
+        snprintf(buf, sizeof(buf), "%dy %dm  %d%% done", age_years_, age_months_, life_pct_);
         int w = MeasureTextWidth(buf, small_font_);
         int x = (width - w) / 2;
         x = (x + 7) & ~7;
@@ -278,7 +278,7 @@ void LifeBarRenderer::RenderGauge(uint8_t* fb, int width, int y_start, int avail
 
     // Line 2: Days remaining
     if (stats_y + small_font_->line_height <= bottom_limit) {
-        snprintf(buf, sizeof(buf), "剩余天数 %d天", days_remaining_);
+        snprintf(buf, sizeof(buf), "Days left %d", days_remaining_);
         int w = MeasureTextWidth(buf, small_font_);
         int x = (width - w) / 2;
         x = (x + 7) & ~7;
@@ -288,7 +288,7 @@ void LifeBarRenderer::RenderGauge(uint8_t* fb, int width, int y_start, int avail
 
     // Line 3: Weekends remaining
     if (stats_y + small_font_->line_height <= bottom_limit) {
-        snprintf(buf, sizeof(buf), "剩余周末 %d个", weekends_remaining_);
+        snprintf(buf, sizeof(buf), "Weekends left %d", weekends_remaining_);
         int w = MeasureTextWidth(buf, small_font_);
         int x = (width - w) / 2;
         x = (x + 7) & ~7;

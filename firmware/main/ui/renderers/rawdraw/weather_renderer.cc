@@ -163,8 +163,8 @@ void WeatherRenderer::Render(uint8_t* fb, int width, int height) {
     DrawStyledRect(fb, width, {0, Style::kStatusBarHeight, width, height - Style::kStatusBarHeight}, bg_style);
 
     if (!has_data_) {
-        const char* empty_text = "暂无天气数据";
-        const char* hint = "长按刷新";
+        const char* empty_text = "No weather data";
+        const char* hint = "Hold to refresh";
         int text_w = MeasureTextWidth(empty_text, font_);
         int hint_w = MeasureTextWidth(hint, font_);
         int center_y = content_top + (height - content_top) / 2;
@@ -174,7 +174,7 @@ void WeatherRenderer::Render(uint8_t* fb, int width, int height) {
         DrawText(fb, width, (width - hint_w) / 2, TopYFromBaseline(font_, hint_baseline), hint, font_, secondary);
     } else {
         std::string location = city_name_.empty() ? current_data_.city : city_name_;
-        if (location.empty()) location = "杭州";
+        if (location.empty()) location = "Hangzhou";
         std::string location_line = FitTextToWidth(location, title_font_, 180);
 
         // Top summary: three equal-height blocks on one visual baseline.
@@ -206,7 +206,7 @@ void WeatherRenderer::Render(uint8_t* fb, int width, int height) {
         DrawHLine(fb, width, temp_y + title_font_->line_height, temp_x, temp_x + temp_w, accent);
 
         char feels_buf[28];
-        snprintf(feels_buf, sizeof(feels_buf), "体感 %s°C",
+        snprintf(feels_buf, sizeof(feels_buf), "Feels %s°C",
                  current_data_.feels_like.empty() ? (current_data_.temp.empty() ? "--" : current_data_.temp.c_str()) : current_data_.feels_like.c_str());
         const int feels_w = MeasureTextWidth(feels_buf, font_);
         DrawText(fb, width, temp_box.x + (temp_box.w - feels_w) / 2,
@@ -215,15 +215,15 @@ void WeatherRenderer::Render(uint8_t* fb, int width, int height) {
 
         DrawStyledRoundRect(fb, width, height, aqi_box, Style::kBorderRadiusMD, card_style);
         DrawText(fb, width, aqi_box.x + 16,
-                 InkCenteredTextTopY(font_, "空气质量", aqi_box.y + 17, 0),
-                 "空气质量", font_, secondary);
+                 InkCenteredTextTopY(font_, "Air quality", aqi_box.y + 17, 0),
+                 "Air quality", font_, secondary);
         char aqi_buf[40];
         snprintf(aqi_buf, sizeof(aqi_buf), "%d", current_data_.air_aqi >= 0 ? static_cast<int>(current_data_.air_aqi) : 0);
         const int aqi_w = MeasureTextWidth(aqi_buf, title_font_);
         DrawText(fb, width, aqi_box.x + (aqi_box.w - aqi_w) / 2,
                  InkCenteredTextTopY(title_font_, aqi_buf, aqi_box.y + 42, 0),
                  aqi_buf, title_font_, text);
-        std::string air = current_data_.air_quality.empty() ? "优" : current_data_.air_quality;
+        std::string air = current_data_.air_quality.empty() ? "Good" : current_data_.air_quality;
         const int air_w = MeasureTextWidth(air.c_str(), font_);
         DrawText(fb, width, aqi_box.x + (aqi_box.w - air_w) / 2,
                  InkCenteredTextTopY(font_, air.c_str(), aqi_box.y + 58, 0),
@@ -231,7 +231,7 @@ void WeatherRenderer::Render(uint8_t* fb, int width, int height) {
 
         // Weather condition stack: icon above text, avoiding the old cramped
         // horizontal icon+label composition.
-        std::string desc_line = FitTextToWidth(current_data_.weather_text.empty() ? "天气 --" : current_data_.weather_text,
+        std::string desc_line = FitTextToWidth(current_data_.weather_text.empty() ? "Weather --" : current_data_.weather_text,
                                                font_, 80);
         const char* desc_glyph = IconGlyphForCode(current_data_.weather_icon, current_data_.weather_text);
         const int condition_center_x = 70;
@@ -245,12 +245,12 @@ void WeatherRenderer::Render(uint8_t* fb, int width, int height) {
                  desc_line.c_str(), font_, text);
 
         const int metrics_y = 156;
-        const char* labels[] = {"湿度", "风向", "风力", "紫外线"};
+        const char* labels[] = {"Humidity", "Wind dir", "Wind force", "UV"};
         std::string values[] = {
             current_data_.humidity.empty() ? "--%" : current_data_.humidity + "%",
             current_data_.wind_dir.empty() ? "--" : current_data_.wind_dir,
-            current_data_.wind_scale.empty() ? "--级" : current_data_.wind_scale + "级",
-            "弱",
+            current_data_.wind_scale.empty() ? "--" : current_data_.wind_scale + "",
+            "Low",
         };
         const int metric_x[] = {42, 128, 224, 318};
         for (int i = 0; i < 4; ++i) {

@@ -22,11 +22,11 @@ LifeBarPage::LifeBarPage(lv_obj_t* parent) {
 
     // 年龄标签
     age_label_ = lv_label_create(container_);
-    lv_label_set_text(age_label_, "年龄: -- 岁");
+    lv_label_set_text(age_label_, "Age: --");
 
     // 目标标签
     goal_label_ = lv_label_create(container_);
-    lv_label_set_text(goal_label_, "目标: --");
+    lv_label_set_text(goal_label_, "Target: --");
 
     // 进度条
     progress_bar_ = lv_bar_create(container_);
@@ -36,7 +36,7 @@ LifeBarPage::LifeBarPage(lv_obj_t* parent) {
 
     // 进度百分比
     progress_label_ = lv_label_create(container_);
-    lv_label_set_text(progress_label_, "进度: 0%");
+    lv_label_set_text(progress_label_, "Progress: 0%");
 
     ESP_LOGI(kTag, "LifeBar page created");
 }
@@ -46,9 +46,9 @@ LifeBarPage::~LifeBarPage() {
 }
 
 void LifeBarPage::UpdateData(const LifeBarData& data) {
-    if (age_label_) lv_label_set_text_fmt(age_label_, "年龄: %s 岁", data.age.c_str());
-    if (goal_label_) lv_label_set_text_fmt(goal_label_, "目标: %s", data.goal.c_str());
-    if (progress_label_) lv_label_set_text_fmt(progress_label_, "进度: %s", data.progress.c_str());
+    if (age_label_) lv_label_set_text_fmt(age_label_, "Age: %s", data.age.c_str());
+    if (goal_label_) lv_label_set_text_fmt(goal_label_, "Target: %s", data.goal.c_str());
+    if (progress_label_) lv_label_set_text_fmt(progress_label_, "Progress: %s", data.progress.c_str());
 
     // 设置进度条值
     if (progress_bar_) {

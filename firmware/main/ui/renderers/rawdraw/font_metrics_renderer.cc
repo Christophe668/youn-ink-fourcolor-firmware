@@ -45,9 +45,9 @@ void FontMetricsRenderer::Render(uint8_t* fb, int width, int height) {
     int y = Style::kStatusBarHeight + 10;
     char buf[96];
 
-    DrawMetricLine(fb, width, height, x, y, "字体指标页：看公式，不看美观", font_);
+    DrawMetricLine(fb, width, height, x, y, "Font metrics page: formulas, not looks", font_);
 
-    const TextInkBounds r_ink = MeasureTextInkBounds(font_, "识别中...");
+    const TextInkBounds r_ink = MeasureTextInkBounds(font_, "Recognizing...");
     snprintf(buf, sizeof(buf), "Regular: lh=%d bl=%d inkTop=%d inkBot=%d inkH=%d",
              static_cast<int>(font_->line_height),
              static_cast<int>(font_->base_line),
@@ -56,8 +56,8 @@ void FontMetricsRenderer::Render(uint8_t* fb, int width, int height) {
              r_ink.height);
     DrawMetricLine(fb, width, height, x, y, buf, font_);
 
-    const TextInkBounds s_ink = MeasureTextInkBounds(font_, "发送");
-    snprintf(buf, sizeof(buf), "发送: inkTop=%d inkBot=%d inkH=%d",
+    const TextInkBounds s_ink = MeasureTextInkBounds(font_, "Send");
+    snprintf(buf, sizeof(buf), "Send: inkTop=%d inkBot=%d inkH=%d",
              s_ink.top, s_ink.bottom, s_ink.height);
     DrawMetricLine(fb, width, height, x, y, buf, font_);
 
@@ -77,21 +77,21 @@ void FontMetricsRenderer::Render(uint8_t* fb, int width, int height) {
     const int box_h = 42;
     const int center_y = box_y + box_h / 2;
     const int line_y = CenterTextTopY(font_, box_y, box_h, 0);
-    const int ink_y = InkCenteredTextTopYInBox(font_, "识别中...", box_y, box_h, 0);
-    snprintf(buf, sizeof(buf), "42px框: lineTop=%d inkTop=%d delta=%d",
+    const int ink_y = InkCenteredTextTopYInBox(font_, "Recognizing...", box_y, box_h, 0);
+    snprintf(buf, sizeof(buf), "42px box: lineTop=%d inkTop=%d delta=%d",
              line_y, ink_y, ink_y - line_y);
     DrawMetricLine(fb, width, height, x, y, buf, font_);
 
-    snprintf(buf, sizeof(buf), "line公式: top + (h-lh)/2 = %d", line_y);
+    snprintf(buf, sizeof(buf), "line formula: top + (h-lh)/2 = %d", line_y);
     DrawMetricLine(fb, width, height, x, y, buf, font_);
 
-    snprintf(buf, sizeof(buf), "ink公式: center(%d)-inkCenter = %d", center_y, ink_y);
+    snprintf(buf, sizeof(buf), "ink formula: center(%d)-inkCenter = %d", center_y, ink_y);
     DrawMetricLine(fb, width, height, x, y, buf, font_);
 
     DrawRectBorder(fb, width, {x, y, Style::kScreenWidth - x * 2, box_h}, 1, BLACK);
     DrawHLine(fb, width, y + box_h / 2, x, Style::kScreenWidth - x, BLACK);
-    DrawText(fb, width, x + 10, InkCenteredTextTopYInBox(font_, "识别中...", y, box_h, 0),
-             "识别中...（ink居中）", font_, BLACK, height);
+    DrawText(fb, width, x + 10, InkCenteredTextTopYInBox(font_, "Recognizing...", y, box_h, 0),
+             "Recognizing... (ink centered)", font_, BLACK, height);
 
     needs_full_refresh_ = false;
 }

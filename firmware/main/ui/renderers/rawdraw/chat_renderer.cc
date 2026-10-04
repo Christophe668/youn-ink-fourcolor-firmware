@@ -255,13 +255,13 @@ void ChatRenderer::Render(uint8_t* fb, int width, int height) {
     DrawRoundRect(fb, width, input_box, Style::kBorderRadiusMD, WHITE, BLACK, 1);
     const char* input_hint = nullptr;
     if (is_listening_) {
-        input_hint = "正在录音并识别...";
+        input_hint = "Recording and recognizing...";
     } else if (is_streaming_) {
-        input_hint = "AI 正在回复";
+        input_hint = "AI is replying";
     } else if (!bottom_status_text_.empty()) {
         input_hint = bottom_status_text_.c_str();
     } else {
-        input_hint = "按住BOOT开始说话";
+        input_hint = "Hold BOOT to talk";
     }
     const std::string hint = FitTextToWidth(input_hint, font_, input_box.w - 24);
     DrawText(fb, width, input_box.x + 12,
@@ -270,7 +270,7 @@ void ChatRenderer::Render(uint8_t* fb, int width, int height) {
 
     Rect send_box{input_box.x + input_box.w + kChatInputGap, input_y, kChatSendW, input_h};
     DrawRoundRect(fb, width, send_box, Style::kBorderRadiusMD, WHITE, BLACK, 1);
-    const char* action = is_streaming_ ? "回复中" : "发送";
+    const char* action = is_streaming_ ? "Replying" : "Send";
     const int action_w = MeasureTextWidth(action, font_);
     DrawText(fb, width, send_box.x + (send_box.w - action_w) / 2,
              InkCenteredTextTopY(font_, action, send_box.y + send_box.h / 2, 0),
@@ -329,7 +329,7 @@ void ChatRenderer::DrawStreamingIndicator(uint8_t* fb, int width,
     dots[3] = '\0';
 
     char buf[64];
-    snprintf(buf, sizeof(buf), "思考中%s", dots);
+    snprintf(buf, sizeof(buf), "Thinking%s", dots);
 
     // Background pill
     int text_w = MeasureTextWidth(buf, font_);
@@ -505,7 +505,7 @@ void ChatRenderer::HideStatus() {
 void ChatRenderer::SetListening(bool listening) {
     is_listening_ = listening;
     if (listening) {
-        bottom_status_text_ = "正在聆听...";
+        bottom_status_text_ = "Listening...";
     } else {
         bottom_status_text_.clear();
     }
@@ -607,7 +607,7 @@ void ChatRenderer::RenderVolumeDialog(uint8_t* fb, int width, int height) {
                         Style::kBorderRadiusLG, modal_style);
 
     // Title
-    const char* title = "音量调整";
+    const char* title = "Volume";
     const int title_w = MeasureTextWidth(title, font_);
     DrawText(fb, width, dialog_x + (dialog_w - title_w) / 2,
              InkCenteredTextTopY(font_, title, dialog_y + 24, 0),
@@ -644,8 +644,8 @@ void ChatRenderer::RenderVolumeDialog(uint8_t* fb, int width, int height) {
 
     // Hint text
     const int hint_center_y = dialog_y + dialog_h - 20;
-    DrawText(fb, width, inner_x + 6, InkCenteredTextTopY(font_, "UP/DN 调整  BOOT 保存", hint_center_y, 0),
-             "UP/DN 调整  BOOT 保存", font_, theme.ColorFor(ThemeToken::TextSecondary), height);
+    DrawText(fb, width, inner_x + 6, InkCenteredTextTopY(font_, "UP/DN adjust  BOOT save", hint_center_y, 0),
+             "UP/DN adjust  BOOT save", font_, theme.ColorFor(ThemeToken::TextSecondary), height);
 }
 
 }  // namespace rawdraw

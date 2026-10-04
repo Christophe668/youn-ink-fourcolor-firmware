@@ -42,12 +42,12 @@ struct WeatherData {
     std::string temp;         // Current temperature (e.g., "25")
     std::string feels_like;   // Feels like temperature (e.g., "27")
     std::string weather_icon; // QWeather icon code for current weather (e.g., "100")
-    std::string weather_text; // Weather condition (e.g., "晴", "多云", "小雨")
-    std::string wind_dir;     // Wind direction (e.g., "东南风")
+    std::string weather_text; // Weather condition (e.g., "Sunny", "Cloudy", "Light rain")
+    std::string wind_dir;     // Wind direction (e.g., "SE wind")
     std::string wind_scale;   // Wind scale (e.g., "3")
     std::string humidity;     // Humidity percentage (e.g., "45")
     std::string update_time;  // Last update time (e.g., "14:30")
-    std::string air_quality;  // Air quality text (e.g., "优")
+    std::string air_quality;  // Air quality text (e.g., "Good")
     int32_t air_aqi = -1;     // AQI number
     int32_t temp_int;         // Numeric temperature for icon selection
     std::vector<WeatherForecastDay> forecast;

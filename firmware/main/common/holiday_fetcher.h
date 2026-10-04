@@ -34,7 +34,7 @@ struct HolidayEntry {
     int16_t year;    // e.g. 2026
     int8_t month;    // 1-12
     int8_t day;      // 1-31
-    char name[16];   // "春节", "国庆节", etc.
+    char name[16];   // "Spring Festival", "National Day", etc.
     bool is_rest;    // true = holiday/rest, false = makeup workday (补班)
 };
 

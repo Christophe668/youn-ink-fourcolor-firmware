@@ -146,37 +146,37 @@ void ClearDialogRegionRounded(uint8_t* fb, int width, int height,
     // Map label to FA Unicode character
     const char* icon_char = nullptr;
     
-    if (label == "系统") {
+    if (label == "System") {
         icon_char = "\xef\x80\x93";  // U+F013 gear
-    } else if (label == "网络" || label == "Wi-Fi") {
+    } else if (label == "Network" || label == "Wi-Fi") {
         icon_char = "\xef\x87\xab";  // U+F1EB wifi
-    } else if (label == "功能" || label == "语音唤醒") {
+    } else if (label == "Features" || label == "Voice wake") {
         icon_char = "\xef\x82\xad";  // U+F0AD wrench
-    } else if (label == "时钟显示") {
+    } else if (label == "Clock display") {
         icon_char = "\xef\x80\x97";  // U+F017 clock
-    } else if (label == "存储" || label == "存储空间") {
+    } else if (label == "Storage" || label == "Storage") {
         icon_char = "\xef\x87\x80";  // U+F1C0 database
-    } else if (label == "关于") {
+    } else if (label == "About") {
         icon_char = "\xef\x81\x9a";  // U+F05A info-circle
-    } else if (label == "音量") {
+    } else if (label == "Volume") {
         icon_char = "\xef\x80\xa8";  // U+F028 volume-up
-    } else if (label == "电池方向") {
+    } else if (label == "Battery side") {
         icon_char = "\xef\x89\x80";  // U+F240 battery-full
-    } else if (label == "重启") {
+    } else if (label == "Restart") {
         icon_char = "\xef\x80\xa1";  // U+F021 sync/refresh (旋转)
-    } else if (label == "关机") {
+    } else if (label == "Power off") {
         icon_char = "\xef\x80\x91";  // U+F011 power-off
-    } else if (label == "日期格式") {
+    } else if (label == "Date format") {
         icon_char = "\xef\x81\xb3";  // U+F073 calendar
-    } else if (label == "AI对话长度") {
+    } else if (label == "AI reply length") {
         icon_char = "\xef\x81\xb5";  // U+F075 comment
-    } else if (label == "同步间隔" || label == "同步记录") {
+    } else if (label == "Sync interval" || label == "Sync log") {
         icon_char = "\xef\x80\xa1";  // U+F021 sync/refresh
-    } else if (label == "服务") {
+    } else if (label == "Service") {
         icon_char = "\xef\x88\xb3";  // U+F233 server
-    } else if (label == "服务地址") {
+    } else if (label == "Server address") {
         icon_char = "\xef\x81\x81";  // U+F041 map-marker (定位)
-    } else if (label == "蓝牙") {
+    } else if (label == "Bluetooth") {
         icon_char = kIconBluetooth;
     } else {
         icon_char = "\xef\x81\x9a";  // fallback: info-circle
@@ -472,13 +472,13 @@ void SettingsRenderer::Render(uint8_t* fb, int width, int height) {
 
     const char* current_section = (section_indices[current_section_pos] >= 0)
         ? items_[section_indices[current_section_pos]].label.c_str()
-        : "系统";
+        : "System";
 
     const int nav_top = body_top + kSettingsContentTopGap;
     for (int i = 0; i < static_cast<int>(section_indices.size()); ++i) {
         const int sy = nav_top + i * kSettingsNavItemH;
         const bool selected = (i == current_section_pos);
-        const char* label = (section_indices[i] >= 0) ? items_[section_indices[i]].label.c_str() : "系统";
+        const char* label = (section_indices[i] >= 0) ? items_[section_indices[i]].label.c_str() : "System";
         const int nav_pill_x = 16;
         const int nav_pill_w = kSettingsNavDividerX - 26;
         const int nav_pill_h = 28;
@@ -507,22 +507,22 @@ void SettingsRenderer::Render(uint8_t* fb, int width, int height) {
         if (items_[i].type != SettingsItemType::Section) option_indices.push_back(i);
     }
 
-    const bool about_section = std::string(current_section) == "关于";
+    const bool about_section = std::string(current_section) == "About";
     int debug_visible_row_count = 0;
     if (about_section) {
         struct InfoRow {
             const char* label;
             std::string value;
         };
-        const std::string version = firmware_version_.empty() ? "未知" : firmware_version_;
-        const std::string serial = mac_address_.empty() ? "未读取" : mac_address_;
+        const std::string version = firmware_version_.empty() ? "Unknown" : firmware_version_;
+        const std::string serial = mac_address_.empty() ? "Not read" : mac_address_;
         const std::vector<InfoRow> rows = {
-            {"设备名称", "notellm"},
-            {"型号", "Youn-Beta1.0"},
-            {"固件版本", version},
-            {"硬件版本", chip_model_.empty() ? "ESP32-S3" : chip_model_},
-            {"序列号", serial},
-            {"官方网站", "blog.lazyyoun.xyz"},
+            {"Device name", "notellm"},
+            {"Model", "Youn-Beta1.0"},
+            {"Firmware", version},
+            {"Hardware", chip_model_.empty() ? "ESP32-S3" : chip_model_},
+            {"Serial", serial},
+            {"Website", "blog.lazyyoun.xyz"},
         };
         debug_visible_row_count = static_cast<int>(rows.size());
         int y = kSettingsTableTop;
@@ -605,7 +605,7 @@ void SettingsRenderer::Render(uint8_t* fb, int width, int height) {
     if (showing_debug_info_ && now < debug_hint_until_us_) {
         const int hint_y = Style::kStatusBarHeight + 2;
         const int hint_h = font_->line_height + Style::kSpacingXS * 2;
-        const char* hint_text = "调试信息已显示";
+        const char* hint_text = "Debug info shown";
         int hint_w = MeasureTextWidth(hint_text, font_);
         int hint_x = (width - hint_w) / 2;
 
@@ -654,7 +654,7 @@ void SettingsRenderer::RenderItem(uint8_t* fb, int width, int y,
     const auto& theme = ThemeManager::Get();
     const PaintStyle text_style = theme.Style(ThemeToken::TextPrimary);
     const PaintStyle selected_style = theme.Component(ComponentRole::SettingsSelected);
-    const Color action_color = TokenInkOnPaper(item.label == "关机" ? ThemeToken::Danger : ThemeToken::Accent);
+    const Color action_color = TokenInkOnPaper(item.label == "Power off" ? ThemeToken::Danger : ThemeToken::Accent);
     // The selected setting row uses a compact left rail instead of a full
     // filled background, so row content must stay readable on white paper.
     const Color fg_color = text_style.fg;
@@ -710,7 +710,7 @@ void SettingsRenderer::RenderItem(uint8_t* fb, int width, int y,
                      value_font_, text_style.fg);
         }
     } else if (item.type == SettingsItemType::Action) {
-        const char* action_text = item.value.empty() ? "执行" : item.value.c_str();
+        const char* action_text = item.value.empty() ? "Run" : item.value.c_str();
         const int action_w = MeasureTextWidth(action_text, value_font_);
         const int act_x = content_right - right_margin - action_w;
         label_right = act_x - Style::kSpacingLG;
@@ -1129,7 +1129,7 @@ void SettingsRenderer::RenderDebugInfo(uint8_t* fb, int width, int height, int b
     DrawHLine(fb, width, y, Style::kSpacingMD, width - Style::kSpacingMD, border);
     y += Style::kSpacingXS;
 
-    DrawText(fb, width, Style::kSpacingMD, y, "调试信息", title_font_, text);
+    DrawText(fb, width, Style::kSpacingMD, y, "Debug info", title_font_, text);
     y += title_font_->line_height + Style::kSpacingXS;
 
     // MAC address
@@ -1230,12 +1230,12 @@ void SettingsRenderer::RenderAboutDialog(uint8_t* fb, int width, int height) {
         std::string value;
     };
     const std::vector<InfoRow> rows = {
-        {"设备名称", "notellm"},
-        {"型号", "Youn-Beta1.0"},
-        {"固件版本", firmware_version_.empty() ? "未知" : firmware_version_},
-        {"硬件版本", chip_model_.empty() ? "ESP32-S3" : chip_model_},
-        {"序列号", mac_address_.empty() ? "未读取" : mac_address_},
-        {"官方网站", "blog.lazyyoun.xyz"},
+        {"Device name", "notellm"},
+        {"Model", "Youn-Beta1.0"},
+        {"Firmware", firmware_version_.empty() ? "Unknown" : firmware_version_},
+        {"Hardware", chip_model_.empty() ? "ESP32-S3" : chip_model_},
+        {"Serial", mac_address_.empty() ? "Not read" : mac_address_},
+        {"Website", "blog.lazyyoun.xyz"},
     };
     const int row_h = kAboutRowHeight;
     int y = dialog_y + titlebar_h + 12;
@@ -1289,7 +1289,7 @@ void SettingsRenderer::RenderStorageDialog(uint8_t* fb, int width, int height) {
     DrawLine(fb, width, {dialog_x + 10, dialog_y + 10}, {dialog_x + 18, dialog_y + 18}, accent);
     DrawLine(fb, width, {dialog_x + 18, dialog_y + 10}, {dialog_x + 10, dialog_y + 18}, accent);
 
-    const char* title = "存储空间";
+    const char* title = "Storage";
     const int title_w = MeasureTextWidth(title, font_);
     DrawText(fb, width, dialog_x + (dialog_w - title_w) / 2,
              InkCenteredTextTopYInBox(font_, title, dialog_y, titlebar_h, 0),
@@ -1329,10 +1329,10 @@ void SettingsRenderer::RenderStorageDialog(uint8_t* fb, int width, int height) {
         std::string value;
     };
     const std::vector<InfoRow> rows = {
-        {"已用空间", storage_used_},
-        {"总空间", storage_total_},
-        {"图片数量", std::to_string(storage_photos_)},
-        {"TXT数量", std::to_string(storage_txts_)},
+        {"Used", storage_used_},
+        {"Total", storage_total_},
+        {"Images", std::to_string(storage_photos_)},
+        {"TXT files", std::to_string(storage_txts_)},
     };
     const int rows_x = dialog_x + 88;
     int y = dialog_y + titlebar_h + 12;
@@ -1377,7 +1377,7 @@ void SettingsRenderer::RenderVolumeDialog(uint8_t* fb, int width, int height) {
                         Style::kBorderRadiusLG, shadow_style);
     DrawStyledRoundRect(fb, width, height, {dialog_x, dialog_y, dialog_w, dialog_h},
                         Style::kBorderRadiusLG, modal_style);
-    const char* title = "音量调整";
+    const char* title = "Volume";
     const int title_w = MeasureTextWidth(title, font_);
     DrawText(fb, width, dialog_x + (dialog_w - title_w) / 2,
              InkCenteredTextTopY(font_, title, dialog_y + 24, kTextOpticalNudgeY),
@@ -1393,7 +1393,7 @@ void SettingsRenderer::RenderVolumeDialog(uint8_t* fb, int width, int height) {
 
     const int speaker_x = inner_x + 12;
     const int speaker_y = dialog_y + 60;
-    DrawSettingsVectorIcon(fb, width, "音量", speaker_x, speaker_y, accent);
+    DrawSettingsVectorIcon(fb, width, "Volume", speaker_x, speaker_y, accent);
 
     const int track_x = inner_x;
     const int track_y = dialog_y + 102;
@@ -1413,8 +1413,8 @@ void SettingsRenderer::RenderVolumeDialog(uint8_t* fb, int width, int height) {
     }
 
     const int hint_center_y = dialog_y + dialog_h - 20;
-    DrawText(fb, width, inner_x + 6, InkCenteredTextTopY(font_, "UP/DN 调整  BOOT 保存", hint_center_y, kTextOpticalNudgeY),
-             "UP/DN 调整  BOOT 保存", font_, secondary, height);
+    DrawText(fb, width, inner_x + 6, InkCenteredTextTopY(font_, "UP/DN adjust  BOOT save", hint_center_y, kTextOpticalNudgeY),
+             "UP/DN adjust  BOOT save", font_, secondary, height);
 }
 
 void SettingsRenderer::RenderServerDialog(uint8_t* fb, int width, int height) {
@@ -1447,7 +1447,7 @@ void SettingsRenderer::RenderServerDialog(uint8_t* fb, int width, int height) {
     DrawLine(fb, width, {dialog_x + 10, dialog_y + 10}, {dialog_x + 18, dialog_y + 18}, danger);
     DrawLine(fb, width, {dialog_x + 18, dialog_y + 10}, {dialog_x + 10, dialog_y + 18}, danger);
 
-    const char* title = "服务地址";
+    const char* title = "Server address";
     const int title_w = MeasureTextWidth(title, font_);
     DrawText(fb, width, dialog_x + (dialog_w - title_w) / 2,
              InkCenteredTextTopYInBox(font_, title, dialog_y, titlebar_h, 0),
@@ -1464,7 +1464,7 @@ void SettingsRenderer::RenderServerDialog(uint8_t* fb, int width, int height) {
     int y = dialog_y + titlebar_h + 10;
 
     // Current connection label
-    std::string current_label = "当前: " + (server_current_addr_.empty() ? "未连接" : server_current_addr_);
+    std::string current_label = "Current: " + (server_current_addr_.empty() ? "Not connected" : server_current_addr_);
     DrawText(fb, width, rows_x,
              InkCenteredTextTopYInBox(font_, current_label.c_str(), y, row_h, 0),
              current_label.c_str(), font_, secondary, height);
@@ -1478,8 +1478,8 @@ void SettingsRenderer::RenderServerDialog(uint8_t* fb, int width, int height) {
         int index;
     };
     const ServerOption options[] = {
-        {"本地自发现", server_local_addr_, 0},
-        {"远程服务器", server_remote_addr_, 1},
+        {"Local discovery", server_local_addr_, 0},
+        {"Remote server", server_remote_addr_, 1},
     };
 
     for (const auto& opt : options) {
@@ -1511,8 +1511,8 @@ void SettingsRenderer::RenderServerDialog(uint8_t* fb, int width, int height) {
     // Hint
     const int hint_center_y = dialog_y + dialog_h - 20;
     DrawText(fb, width, dialog_x + 30,
-             InkCenteredTextTopY(font_, "UP/DN 切换  BOOT 确认", hint_center_y, 0),
-             "UP/DN 切换  BOOT 确认", font_, secondary, height);
+             InkCenteredTextTopY(font_, "UP/DN switch  BOOT confirm", hint_center_y, 0),
+             "UP/DN switch  BOOT confirm", font_, secondary, height);
 }
 
 void SettingsRenderer::RenderServerListDialog(uint8_t* fb, int width, int height) {
@@ -1546,7 +1546,7 @@ void SettingsRenderer::RenderServerListDialog(uint8_t* fb, int width, int height
     DrawLine(fb, width, {dialog_x + 10, dialog_y + 10}, {dialog_x + 18, dialog_y + 18}, danger);
     DrawLine(fb, width, {dialog_x + 18, dialog_y + 10}, {dialog_x + 10, dialog_y + 18}, danger);
 
-    const char* title = "服务地址历史";
+    const char* title = "Server history";
     const int title_w = MeasureTextWidth(title, font_);
     DrawText(fb, width, dialog_x + (dialog_w - title_w) / 2,
              InkCenteredTextTopYInBox(font_, title, dialog_y, titlebar_h, 0),
@@ -1564,8 +1564,8 @@ void SettingsRenderer::RenderServerListDialog(uint8_t* fb, int width, int height
 
     if (total == 0) {
         DrawText(fb, width, rows_x,
-                 InkCenteredTextTopY(font_, "无历史地址", y + row_h / 2, 0),
-                 "无历史地址", font_, secondary, height);
+                 InkCenteredTextTopY(font_, "No saved servers", y + row_h / 2, 0),
+                 "No saved servers", font_, secondary, height);
     } else {
         // Render visible rows with scrolling
         const int visible_rows = std::min(kServerListVisibleRows, total);
@@ -1602,7 +1602,7 @@ void SettingsRenderer::RenderServerListDialog(uint8_t* fb, int width, int height
 
             // Current indicator
             if (is_current) {
-                const char* cur_mark = "(当前)";
+                const char* cur_mark = "(current)";
                 DrawText(fb, width, content_right - MeasureTextWidth(cur_mark, font_) - 4,
                          InkCenteredTextTopY(font_, cur_mark, center_y, 0),
                          cur_mark, font_, is_selected ? selected_style.fg : secondary, height);
@@ -1628,8 +1628,8 @@ void SettingsRenderer::RenderServerListDialog(uint8_t* fb, int width, int height
     // Hint
     const int hint_center_y = dialog_y + dialog_h - 20;
     DrawText(fb, width, dialog_x + 30,
-             InkCenteredTextTopY(font_, "UP/DN 滚动  BOOT 选择", hint_center_y, 0),
-             "UP/DN 滚动  BOOT 选择", font_, secondary, height);
+             InkCenteredTextTopY(font_, "UP/DN scroll  BOOT select", hint_center_y, 0),
+             "UP/DN scroll  BOOT select", font_, secondary, height);
 }
 
 void SettingsRenderer::RenderThemeDialog(uint8_t* fb, int width, int height) {
@@ -1656,7 +1656,7 @@ void SettingsRenderer::RenderThemeDialog(uint8_t* fb, int width, int height) {
                         Style::kBorderRadiusMD, modal_style);
     DrawHLine(fb, width, dialog_y + titlebar_h, dialog_x + 1, dialog_x + dialog_w - 2, border_style.border);
 
-    const char* title = "选择主题";
+    const char* title = "Choose theme";
     const int title_w = MeasureTextWidth(title, font_);
     DrawStyledText(fb, width, dialog_x + (dialog_w - title_w) / 2,
                    InkCenteredTextTopYInBox(font_, title, dialog_y, titlebar_h, 0),
@@ -1690,7 +1690,7 @@ void SettingsRenderer::RenderThemeDialog(uint8_t* fb, int width, int height) {
         DrawRectBorder(fb, width, {swatch_x + 20, y + 6, 16, 13}, 1, border_style.border);
 
         if (current) {
-            const char* mark = "当前";
+            const char* mark = "Current";
             const int mark_w = MeasureTextWidth(mark, value_font_);
             DrawStyledText(fb, width, swatch_x - mark_w - 8,
                            InkCenteredTextTopY(value_font_, mark, center_y, 0),
@@ -1699,7 +1699,7 @@ void SettingsRenderer::RenderThemeDialog(uint8_t* fb, int width, int height) {
         y += row_h;
     }
 
-    const char* hint = "UP/DN 选择  BOOT 应用";
+    const char* hint = "UP/DN select  BOOT apply";
     DrawStyledText(fb, width, dialog_x + 24,
                    InkCenteredTextTopY(font_, hint, dialog_y + dialog_h - 18, 0),
                    hint, font_, text_style, height);
@@ -1738,7 +1738,7 @@ void SettingsRenderer::RenderOtaDialog(uint8_t* fb, int width, int height) {
     DrawLine(fb, width, {dialog_x + 10, dialog_y + 10}, {dialog_x + 18, dialog_y + 18}, danger);
     DrawLine(fb, width, {dialog_x + 18, dialog_y + 10}, {dialog_x + 10, dialog_y + 18}, danger);
 
-    const char* title = "固件更新";
+    const char* title = "Firmware update";
     const int title_w = MeasureTextWidth(title, font_);
     DrawText(fb, width, dialog_x + (dialog_w - title_w) / 2,
              InkCenteredTextTopYInBox(font_, title, dialog_y, titlebar_h, 0),
@@ -1752,7 +1752,7 @@ void SettingsRenderer::RenderOtaDialog(uint8_t* fb, int width, int height) {
     const int rows_x = dialog_x + 18;
     int y = dialog_y + titlebar_h + 10;
 
-    std::string current = "当前: " + (ota_current_version_.empty() ? std::string("--") : ota_current_version_);
+    std::string current = "Current: " + (ota_current_version_.empty() ? std::string("--") : ota_current_version_);
     DrawText(fb, width, rows_x,
              InkCenteredTextTopY(font_, current.c_str(), y + row_h / 2, 0),
              current.c_str(), font_, secondary, height);
@@ -1788,7 +1788,7 @@ void SettingsRenderer::RenderOtaDialog(uint8_t* fb, int width, int height) {
         const int bar_y = y + 34;
         const int bar_w = content_right - rows_x;
         const int bar_h = 16;
-        std::string status = ota_status_text_.empty() ? "正在更新..." : ota_status_text_;
+        std::string status = ota_status_text_.empty() ? "Updating..." : ota_status_text_;
         status = FitTextToWidth(status, font_, std::max(0, content_right - rows_x));
         DrawText(fb, width, rows_x,
                  InkCenteredTextTopY(font_, status.c_str(), y + row_h / 2, 0),
@@ -1807,15 +1807,15 @@ void SettingsRenderer::RenderOtaDialog(uint8_t* fb, int width, int height) {
                  bar_y + bar_h + 8, pct_buf, font_, secondary, height);
     } else {
         std::string status = ota_status_text_;
-        if (status.empty()) status = failed ? "更新失败" : "正在获取版本列表...";
+        if (status.empty()) status = failed ? "Update failed" : "Fetching versions...";
         status = FitTextToWidth(status, font_, std::max(0, content_right - rows_x));
         DrawText(fb, width, rows_x,
                  InkCenteredTextTopY(font_, status.c_str(), y + row_h / 2, 0),
                  status.c_str(), font_, failed ? danger : text, height);
     }
 
-    const char* hint = selecting ? "UP/DN 选择  BOOT 更新  长按取消"
-                                 : "长按取消  BOOT 关闭";
+    const char* hint = selecting ? "UP/DN select  BOOT update  hold cancel"
+                                 : "Hold cancel  BOOT close";
     const std::string hint_text = FitTextToWidth(hint, font_, dialog_w - 40);
     const int hint_center_y = dialog_y + dialog_h - 20;
     DrawText(fb, width, dialog_x + 20,
@@ -1851,7 +1851,7 @@ void SettingsRenderer::RenderOtaConfirmDialog(uint8_t* fb, int width, int height
                         Style::kBorderRadiusMD - 1, title_style);
 
     // 标题
-    const char* title = "确认更新?";
+    const char* title = "Update now?";
     const int title_w = MeasureTextWidth(title, font_);
     DrawText(fb, width, dialog_x + (dialog_w - title_w) / 2,
              InkCenteredTextTopY(font_, title, dialog_y + titlebar_h / 2, 0),
@@ -1861,7 +1861,7 @@ void SettingsRenderer::RenderOtaConfirmDialog(uint8_t* fb, int width, int height
     int y = dialog_y + titlebar_h + 15;
 
     // 显示固件名称
-    std::string firmware_label = "固件: " + ota_confirm_firmware_name_;
+    std::string firmware_label = "Firmware: " + ota_confirm_firmware_name_;
     firmware_label = FitTextToWidth(firmware_label, font_, dialog_w - 60);
     DrawText(fb, width, content_x,
              InkCenteredTextTopY(font_, firmware_label.c_str(), y + row_h / 2, 0),
@@ -1869,7 +1869,7 @@ void SettingsRenderer::RenderOtaConfirmDialog(uint8_t* fb, int width, int height
     y += row_h + 8;
 
     // 确认/取消选项
-    const char* options[2] = {"确认更新", "取消"};
+    const char* options[2] = {"Update", "Cancel"};
     for (int i = 0; i < 2; ++i) {
         const bool is_selected = (i == ota_confirm_selected_);
         const int opt_y = y + i * row_h;
@@ -1885,7 +1885,7 @@ void SettingsRenderer::RenderOtaConfirmDialog(uint8_t* fb, int width, int height
     }
 
     // 提示
-    const char* hint = "UP/DN 选择  BOOT 确认  长按返回";
+    const char* hint = "UP/DN select  BOOT confirm  hold back";
     const int hint_w = MeasureTextWidth(hint, font_);
     const int hint_y = dialog_y + dialog_h - 24;
     DrawText(fb, width, dialog_x + (dialog_w - hint_w) / 2,

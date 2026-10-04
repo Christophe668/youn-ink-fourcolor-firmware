@@ -59,7 +59,7 @@ void AtUart::Initialize() {
     
     event_group_handle_ = xEventGroupCreate();
     if (!event_group_handle_) {
-        ESP_LOGE(TAG, "创建事件组失败");
+        ESP_LOGE(TAG, "Failed to create event group");
         return;
     }
 
@@ -356,7 +356,7 @@ bool AtUart::SetBaudRate(int new_baud_rate, int timeout_ms) {
 
 bool AtUart::SendData(const char* data, size_t length) {
     if (!initialized_) {
-        ESP_LOGE(TAG, "UART未初始化");
+        ESP_LOGE(TAG, "UART not initialized");
         return false;
     }
     
