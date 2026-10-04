@@ -33,6 +33,7 @@ namespace {
 
 constexpr char kTag[] = "ZectrixFtBoard";
 constexpr uint16_t kNavLongPressMs = 1000;
+constexpr uint16_t kUpDoubleClickWindowMs = 300;  // second press within this window = double-click
 constexpr uint16_t kFactoryComboLongPressMs = 3000;
 static std::atomic<bool> s_up_held{false};
 static std::atomic<bool> s_down_held{false};
@@ -62,7 +63,7 @@ void EnterWifiConfigComboOnce() {
 class CustomBoard : public Board {
 public:
     CustomBoard()
-        : up_button_(kBoardUpButtonGpio, false, kNavLongPressMs),
+        : up_button_(kBoardUpButtonGpio, false, kNavLongPressMs, kUpDoubleClickWindowMs),
           down_button_(kBoardDownButtonGpio, false, kNavLongPressMs),
           confirm_button_(kBoardConfirmButtonGpio, false, kNavLongPressMs) {
         InitializePower();
@@ -423,6 +424,13 @@ private:
 
         // UP+DOWN long press enters Wi-Fi config. Single-key long press only
         // gives feedback and refreshes, so it cannot accidentally open AP mode.
+        // UP double-click opens the quick switch overlay
+        up_button_.OnDoubleClick([]() {
+            if (Application::GetInstance().GetRawDrawUiManager()) {
+                Application::GetInstance().OnUpDoubleClick();
+            }
+        });
+
         up_button_.OnLongPress([]() {
             s_up_long_handled.store(true);
             s_up_suppress_click.store(true);

@@ -82,7 +82,7 @@ void StartSntpClockSyncOnce() {
     static bool s_started = false;
     if (s_started) return;
 
-    setenv("TZ", "CST-8", 1);
+    setenv("TZ", "CET-1CEST,M3.5.0,M10.5.0/3", 1);  // Europe/Brussels
     tzset();
     esp_sntp_setoperatingmode(SNTP_OPMODE_POLL);
     esp_sntp_setservername(0, "ntp.aliyun.com");
@@ -100,7 +100,7 @@ void StartSntpClockSyncOnce() {
     });
     esp_sntp_init();
     s_started = true;
-    ESP_LOGI(kTag, "SNTP started: tz=Asia/Shanghai servers=ntp.aliyun.com,cn.pool.ntp.org,pool.ntp.org");
+    ESP_LOGI(kTag, "SNTP started: tz=Europe/Brussels servers=ntp.aliyun.com,cn.pool.ntp.org,pool.ntp.org");
 }
 
 bool IsLocalHttpServiceRunning(const ui::RawDrawUiManager* manager) {
@@ -383,9 +383,18 @@ void Application::OnUpLongPress() {
     ESP_LOGI(kTag, "UP long press");
     NoteButtonActivity();
     if (rawdraw_ui_manager_ &&
-        rawdraw_ui_manager_->GetCurrentPage() == ui::RawDrawPageId::Settings) {
-        ESP_LOGI(kTag, "UP long press - leaving settings");
+        rawdraw_ui_manager_->GetCurrentPage() != ui::RawDrawPageId::Gallery &&
+        rawdraw_ui_manager_->GetCurrentPage() != ui::RawDrawPageId::APTransfer) {
+        ESP_LOGI(kTag, "UP long press - back to gallery");
         rawdraw_ui_manager_->SwitchPage(ui::RawDrawPageId::Gallery);
+    }
+}
+
+void Application::OnUpDoubleClick() {
+    ESP_LOGI(kTag, "UP double click");
+    Board::GetInstance().FlashActivityLed();
+    if (rawdraw_ui_manager_) {
+        rawdraw_ui_manager_->HandleInput(rawdraw::ButtonEvent{rawdraw::ButtonEvent::kUpDoubleClick});
     }
 }
 
